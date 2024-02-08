@@ -5,9 +5,16 @@
  * @format
  */
 
-import React from 'react';
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -30,6 +37,7 @@ type SectionProps = PropsWithChildren<{
 }>;
 
 function Section({children, title}: SectionProps): React.JSX.Element {
+  console.log('section');
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -55,12 +63,53 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
+function useUserViewModel() {
+  const [counter, setCounter] = useState(0);
+  //use state with use ref or callback ?
+  const [user, setUser] = useState(null);
+  console.log('user', user);
+  useEffect(() => {
+    console.log('user updated', counter);
+  }, [counter]);
+
+  return {
+    user,
+    updateUser: (newUser: React.SetStateAction<null>) => {
+      setUser(newUser);
+      setCounter(counter + 1);
+    },
+  };
+}
+
+const AppContext = createContext({});
+
+function NewAppScreen(): React.JSX.Element {
+  const {UserViewModel} = useContext(AppContext);
+  const [usere, setUser] = useState(null);
+  console.log(UserViewModel);
+  return (
+    <>
+      <Text>hello</Text>
+      <Text>{UserViewModel.user}</Text>
+      <Button
+        onPress={() => {
+          UserViewModel.updateUser('new user');
+        }}
+        title="update User"
+      />
+      <Text>{usere}</Text>
+      <Button onPress={() => setUser("hello")} title="update User" />
+    </>
+  );
+}
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const [UserViewModel] = useState(useUserViewModel());
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  console.log('big problem');
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,30 +117,16 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+      <AppContext.Provider value={{userViewModel}}>
+        <NewAppScreen />
+        <Section title="Step One">
+          <DebugInstructions />
+        </Section>
+      </AppContext.Provider>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+        style={backgroundStyle}
+      />
     </SafeAreaView>
   );
 }
