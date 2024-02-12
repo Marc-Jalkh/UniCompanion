@@ -1,4 +1,4 @@
-#Fri Feb 02 12:35:16 EET 2024
+#Mon Feb 12 11:15:52 EET 2024
 base.0=/Users/marcjalkh/Documents/USEK/FYP/UniCompanion/mobile/android/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/marcjalkh/Documents/USEK/FYP/UniCompanion/mobile/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
 base.2=/Users/marcjalkh/Documents/USEK/FYP/UniCompanion/mobile/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
