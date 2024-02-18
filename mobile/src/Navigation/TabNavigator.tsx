@@ -1,15 +1,27 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text} from 'react-native';
+import {Button, Text, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const TabView = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
-
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={() => <Text>tab1</Text>} />
-      <Tab.Screen name="dsad" component={() => <Text>tab2</Text>} />
+    <Tab.Navigator screenOptions={{headerShown: false}}>
+      <Tab.Screen name="Home" component={RedBackgroundScreen} />
+      <Tab.Screen name="another oNe" component={RedBackgroundScreen} />
     </Tab.Navigator>
+  );
+};
+
+const RedBackgroundScreen = (): React.JSX.Element => {
+  const navigation = useNavigation();
+  return (
+    // eslint-disable-next-line react-native/no-inline-styles
+    <View style={{backgroundColor: 'red', flex: 1}}>
+      <Text>hi</Text>
+
+      <Button title="Go to dsad" onPress={() => {}} />
+    </View>
   );
 };
 
