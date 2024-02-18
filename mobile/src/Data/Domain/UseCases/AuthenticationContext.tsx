@@ -14,7 +14,7 @@ export const AuthenticationProvider = ({
   children: React.ReactNode;
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const login = () => {
     setIsAuthenticated(true);
     // setIsLoaded(false);
