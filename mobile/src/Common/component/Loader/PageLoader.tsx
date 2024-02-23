@@ -1,13 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, View} from 'react-native';
-import {useColorTheme} from '../../utils/theme/ColorThemeContex';
+import {View} from 'react-native';
+import {useTheme, ActivityIndicator} from 'react-native-paper';
 
 const PageLoader = () => {
-  const {colors} = useColorTheme();
+  const {colors} = useTheme();
 
   return (
-    <View className="flex-1 items-center justify-center">
-      <ActivityIndicator size="large" color={colors.primary} />
+    <View>
+      <ActivityIndicator animating={true} color={colors.primary} size="large" />
     </View>
   );
 };

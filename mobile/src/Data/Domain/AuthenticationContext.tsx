@@ -1,6 +1,6 @@
 import {useState, createContext, useContext} from 'react';
 import React from 'react';
-import PageLoader from '../../../Common/component/Loader/PageLoader';
+import PageLoader from '../../Common/component/Loader/PageLoader';
 
 const AuthenticationContext = createContext({
   isAuthenticated: false,

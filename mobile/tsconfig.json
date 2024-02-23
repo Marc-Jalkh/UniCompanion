@@ -1,3 +1,7 @@
 {
+  "compilerOptions": {
+      "module": "esnext"
+  },
+
   "extends": "@react-native/typescript-config/tsconfig.json"
 }

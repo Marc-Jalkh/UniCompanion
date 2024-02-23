@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Button, Text, View} from 'react-native';
 import TabView from './TabNavigator';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useAuth} from '../Data/Domain/UseCases/AuthenticationContext';
+import {useAuth} from '../Data/Domain/AuthenticationContext';
 
 type Routes = {
   Login: undefined;
