@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {Button, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import TabView from './TabNavigator';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
+import OnBoardingView from '../Views/OnBoarding';
+import LoginView from '../Views/LoginView';
 
 type Routes = {
   Login: undefined;
@@ -27,8 +29,8 @@ const StackNavigator = (): React.JSX.Element => {
         </Stack.Group>
       ) : (
         <Stack.Group>
-          <Stack.Screen name="OnBoarding" component={BlueBackgroundScreen} />
-          <Stack.Screen name="Login" component={BlueBackgroundScreen} />
+          <Stack.Screen name="OnBoarding" component={OnBoardingView} />
+          <Stack.Screen name="Login" component={LoginView} />
         </Stack.Group>
       )}
     </Stack.Navigator>
@@ -40,29 +42,6 @@ const RedBackgroundScreen = () => {
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{backgroundColor: 'red', flex: 1}}>
       <Text>hi</Text>
-    </View>
-  );
-};
-
-const BlueBackgroundScreen = () => {
-  let {login, logout} = useAuth();
-
-  return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <View style={{backgroundColor: 'blue', flex: 1}}>
-      <Text>hdsai</Text>
-      <Button
-        title="login"
-        onPress={() => {
-          login();
-        }}
-      />
-      <Button
-        title="logout"
-        onPress={() => {
-          logout();
-        }}
-      />
     </View>
   );
 };

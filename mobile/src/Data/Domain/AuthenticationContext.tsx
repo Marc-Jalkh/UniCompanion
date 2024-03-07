@@ -17,11 +17,8 @@ export const AuthenticationProvider = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const login = () => {
     setIsAuthenticated(true);
-    // setIsLoaded(false);
   };
   const logout = () => {
-    setIsLoading(true);
-
     setIsAuthenticated(false);
   };
 

@@ -10,7 +10,7 @@ function App(): React.JSX.Element {
   return (
     <PaperProvider
       theme={
-        darkTheme
+        lightTheme
         // themeMode === 'light' ? lightTheme : darkTheme
       }>
       <Launch />
