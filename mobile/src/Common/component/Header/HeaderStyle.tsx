@@ -6,7 +6,7 @@ export const headerStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 60,
-    marginHorizontal: 16,
+    marginHorizontal: 19,
   },
   title: {
     fontSize: 24,

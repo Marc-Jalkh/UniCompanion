@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
-import {TabScreensStyles} from '../Common/utils/Assets/Styles/TabScreensStyles';
+import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
 
 function LoginView(): React.JSX.Element {
@@ -16,21 +16,21 @@ function LoginView(): React.JSX.Element {
   return (
     <View
       style={{
-        ...TabScreensStyles.container,
+        ...ScreensStyles.container,
         backgroundColor: themeMode.colors.background,
       }}>
       <Text
         variant="displaySmall"
         style={{
-          ...TabScreensStyles.alignCenter,
-          ...TabScreensStyles.marginTop,
+          ...ScreensStyles.alignCenter,
+          ...ScreensStyles.marginTop,
           color: themeMode.colors.secondary,
         }}>
         UniCompaniøn
       </Text>
-      <View style={TabScreensStyles.onBoardingContainer}>
+      <View style={ScreensStyles.onBoardingContainer}>
         <TextInput
-          style={TabScreensStyles.fullWidth}
+          style={ScreensStyles.fullWidth}
           mode="outlined"
           label="Id: "
           placeholder="Enter your id"
@@ -41,7 +41,7 @@ function LoginView(): React.JSX.Element {
           outlineColor={themeMode.colors.secondary}
         />
         <TextInput
-          style={TabScreensStyles.fullWidth}
+          style={ScreensStyles.fullWidth}
           mode="outlined"
           label="Password"
           placeholder="Type something"
@@ -61,22 +61,22 @@ function LoginView(): React.JSX.Element {
         <Button
           mode="contained"
           style={{
-            ...TabScreensStyles.customButton,
-            ...TabScreensStyles.marginTop,
+            ...ScreensStyles.customButton,
+            ...ScreensStyles.marginTop,
           }}
-          contentStyle={TabScreensStyles.smallPaddingVertical}
+          contentStyle={ScreensStyles.smallPaddingVertical}
           buttonColor={themeMode.colors.secondary}
           textColor={themeMode.colors.background}
           onPress={() => login()}>
           Login
         </Button>
-        <View style={TabScreensStyles.horizontalContainer}>
+        <View style={ScreensStyles.horizontalContainer}>
           <Text
             variant="bodyMedium"
             style={{
               color: themeMode.colors.onSecondary,
-              ...TabScreensStyles.paddingVertical,
-              ...TabScreensStyles.alignCenter,
+              ...ScreensStyles.paddingVertical,
+              ...ScreensStyles.alignCenter,
             }}>
             Forgot your password?{' '}
           </Text>

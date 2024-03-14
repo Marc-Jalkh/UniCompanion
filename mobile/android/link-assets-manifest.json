@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-Bold.ttf",
+      "sha1": "a62ba0f05e05e61799a0a77a13dace7a5d6895d7"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-ExtraBold.ttf",
+      "sha1": "e2163cbf24fb7ec524276db9402aedc9b81f2893"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-ExtraLight.ttf",
+      "sha1": "2cb5694dd184ec1ec77cacf1d28909df78c0b21a"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-Light.ttf",
+      "sha1": "023b0764b04410a982cc2a3ff07299e4d313b0f9"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-Medium.ttf",
+      "sha1": "97ee81c5ec3047e72392124e2668cb6dbfe86335"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-Regular.ttf",
+      "sha1": "fc9fd7bf012a108a760c6d549bdd285c70177678"
+    },
+    {
+      "path": "src/Common/utils/Assets/fonts/Assistant-SemiBold.ttf",
+      "sha1": "318b02078143b40f7ec5f9cf85c288105e194fbd"
+    }
+  ]
+}
