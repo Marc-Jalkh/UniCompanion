@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
-import {Text, useTheme} from 'react-native-paper';
+import {useTheme} from 'react-native-paper';
 import {
   // Agenda,
   AgendaList,
   CalendarProvider,
   ExpandableCalendar,
 } from 'react-native-calendars';
+import EventCard from '../Common/component/Card/EventCard';
 //TODO OPTIMIZE USEREF CALLBACK MEMO EVERYWHERE + functionality
 function CalendarView(): JSX.Element {
   const theme = useTheme();
@@ -22,27 +23,106 @@ function CalendarView(): JSX.Element {
   // const onMonthChange = useCallback(({dateString}) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
-  const ITEMS = [
+  const ITEMS = useRef([
     {
       title: '2024-03-10',
       data: [
-        {name: 'item 1 - any js object'},
+        {
+          name: 'item 1 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
         {name: 'item 1 - any js object'},
       ],
     },
     {
       title: '2024-03-11',
-      data: [{name: 'item 2 - any js object', height: 80}],
+
+      data: [
+        {
+          name: 'item 2 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+      ],
     },
-    {
-      title: '2024-03-12',
-      data: [{name: 'item 3 - any js object', height: 80}],
-    },
+
     {
       title: '2024-03-13',
       data: [{name: 'item 4 - any js object', height: 80}],
     },
-  ];
+    {
+      title: '2024-03-15',
+      data: [
+        {name: 'item 4 - any js object', height: 80},
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+      ],
+    },
+    {
+      title: '2024-04-12',
+      data: [
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+        {
+          name: 'item 3 - any js object',
+          timing: '14:00',
+          location: '1.45 hours     •     Room E200',
+        },
+      ],
+    },
+  ]);
   return (
     <View
       style={{
@@ -51,7 +131,7 @@ function CalendarView(): JSX.Element {
       }}>
       <HeaderView />
       <CalendarProvider
-        date={ITEMS[1]?.title}
+        date={ITEMS.current[1]?.title}
         // onDateChanged={onDateChanged}
         // onMonthChange={onMonthChange}
         showTodayButton
@@ -76,8 +156,9 @@ function CalendarView(): JSX.Element {
             textSectionTitleColor: theme.colors.primary,
             selectedDayBackgroundColor: theme.colors.primary,
             selectedDayTextColor: theme.colors.background,
-            todayTextColor: theme.colors.primary,
-            dayTextColor: theme.colors.secondary,
+            todayTextColor: theme.colors.error,
+            todayBackgroundColor: theme.colors.background,
+            dayTextColor: theme.colors.primary,
             agendaKnobColor: theme.colors.secondary,
             dotColor: theme.colors.primary,
             selectedDotColor: theme.colors.background,
@@ -102,17 +183,24 @@ function CalendarView(): JSX.Element {
         />
 
         <AgendaList
-          sections={ITEMS}
-          renderItem={item => <Text>{item.item.name}</Text>}
+          sections={ITEMS.current}
+          renderItem={item => (
+            <EventCard
+              title={item.item.name}
+              timing={item.item.timing}
+              location={item.item.location}
+              isNow={false}
+            />
+          )}
+          // renderSectionHeader={item => <Text>{item.section.title}</Text>}
           scrollToNextEvent
-          // sectionStyle={styles.section}
           dayFormat={'yyyy-MM-d'}
           theme={{
             backgroundColor: theme.colors.background,
             calendarBackground: theme.colors.background,
             textSectionTitleColor: theme.colors.primary,
             selectedDayBackgroundColor: theme.colors.primary,
-            selectedDayTextColor: theme.colors.background,
+            selectedDayTextColor: theme.colors.primary,
             todayTextColor: theme.colors.primary,
             dayTextColor: theme.colors.primary,
             agendaKnobColor: theme.colors.primary,

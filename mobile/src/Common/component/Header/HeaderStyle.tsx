@@ -8,6 +8,12 @@ export const headerStyles = StyleSheet.create({
     height: 60,
     marginHorizontal: 19,
   },
+  containerVariant: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    height: 30,
+    marginHorizontal: 19,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',

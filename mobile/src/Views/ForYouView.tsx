@@ -58,7 +58,7 @@ function ForYouView(): React.JSX.Element {
                 <IconRectangularButton
                   onPress={() => console.log('Create Post')}
                   icon="plus"
-                  title="Wallet"
+                  title="Grade"
                 />
               </View>
             </View>

@@ -1,17 +1,22 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
 import TabView from './TabNavigator';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
 import OnBoardingView from '../Views/OnBoarding';
 import LoginView from '../Views/LoginView';
+import Posts from '../Views/Posts';
+import ForgotPassView from '../Views/ForgotPassword';
+import Post from '../Views/SinglePost';
 
 type Routes = {
   Login: undefined;
   OnBoarding: undefined;
   TabView: undefined;
+  Posts: undefined;
   id: {id: string};
   sadBoarding: undefined;
+  ForgotPass: undefined;
+  Post: {param1: string};
 };
 
 const StackNavigator = (): React.JSX.Element => {
@@ -24,25 +29,17 @@ const StackNavigator = (): React.JSX.Element => {
       {isAuthenticated ? (
         <Stack.Group>
           <Stack.Screen name="TabView" component={TabView} />
-          <Stack.Screen name="id" component={RedBackgroundScreen} />
-          <Stack.Screen name="sadBoarding" component={RedBackgroundScreen} />
+          <Stack.Screen name="Posts" component={Posts} />
+          <Stack.Screen name="Post" component={Post} />
         </Stack.Group>
       ) : (
         <Stack.Group>
           <Stack.Screen name="OnBoarding" component={OnBoardingView} />
           <Stack.Screen name="Login" component={LoginView} />
+          <Stack.Screen name="ForgotPass" component={ForgotPassView} />
         </Stack.Group>
       )}
     </Stack.Navigator>
-  );
-};
-
-const RedBackgroundScreen = () => {
-  return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <View style={{backgroundColor: 'red', flex: 1}}>
-      <Text>hi</Text>
-    </View>
   );
 };
 

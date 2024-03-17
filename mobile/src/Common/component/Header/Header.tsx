@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {headerStyles} from './HeaderStyle';
 import {useNavigation} from '@react-navigation/native';
@@ -42,6 +42,31 @@ function HeaderView(): React.JSX.Element {
         onPress={() => console.log('Pressed')}
         children={undefined}
       />
+    </View>
+  );
+}
+
+export function HeaderVariantView(): React.JSX.Element {
+  const navigation = useNavigation();
+  const [pageTitle, setPageTitle] = useState(
+    navigation?.getState()?.routes[navigation?.getState()?.index]?.name ?? '',
+  );
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('state', () => {
+      const newPageTitle =
+        navigation?.getState()?.routes[navigation?.getState()?.index]?.name;
+      setPageTitle(newPageTitle);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+  return (
+    <View style={headerStyles.containerVariant}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text style={{...headerStyles.title}}>{'<  '} </Text>
+      </TouchableOpacity>
+
+      {pageTitle && <Text style={{...headerStyles.title}}> {pageTitle} </Text>}
     </View>
   );
 }

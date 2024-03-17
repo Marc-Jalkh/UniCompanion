@@ -1,15 +1,18 @@
 // import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import RoundButton from '../Common/component/Button/RoundButton';
 import PostCard from '../Common/component/Card/PostCard';
 import IntoCard from '../Common/component/Card/IntoCard';
+import {useNavigation} from '@react-navigation/native';
 
 function HomeView(): React.JSX.Element {
   const theme = useTheme();
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -55,16 +58,21 @@ function HomeView(): React.JSX.Element {
         </View>
         <IntoCard title="Post" subTitle="Post" gpa="3.99" grade="100/100" />
         <View style={ScreensStyles.marginTop}>
-          <Text variant="titleLarge">Post</Text>
+          <View style={ScreensStyles.horizontalContainerSpaced}>
+            <Text variant="titleLarge">Post</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Posts')}>
+              <Text variant="titleSmall">show all</Text>
+            </TouchableOpacity>
+          </View>
           <View style={ScreensStyles.marginTop}>
             <PostCard
-              onPress={() => console.log('Post')}
+              onPress={() => navigation.navigate('Post', {param1: '1'})}
               image="https://picsum.photos/720"
               title="Post"
               description="Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum ."
             />
             <PostCard
-              onPress={() => console.log('Post')}
+              onPress={() => navigation.navigate('Post', {param1: '2'})}
               image="https://picsum.photos/720"
               title="Post"
               description="Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum ."

@@ -71,6 +71,11 @@ export const ScreensStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  horizontalContainerSpaced: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
   customButton: {
     textAlign: 'center',
     borderRadius: 10,

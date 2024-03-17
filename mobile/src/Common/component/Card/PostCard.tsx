@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Card, Text, useTheme} from 'react-native-paper';
 
-class PostCardProps {
+export class PostCardProps {
   onPress: () => void;
   image: string;
   title: string;

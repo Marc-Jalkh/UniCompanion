@@ -76,7 +76,9 @@ function SearchableList(props: SearchableListProps): React.JSX.Element {
           activeOutlineColor={theme.colors.secondary}
           textColor={theme.colors.secondary}
           left={
-            <TextInput.Icon name="magnify" color={theme.colors.onSecondary} />
+            query.length < 1 ? (
+              <TextInput.Icon name="magnify" color={theme.colors.onSecondary} />
+            ) : null
           }
         />
         <Text
