@@ -39,6 +39,7 @@ function ChatsView(): JSX.Element {
         ]}
         isSearchable={true}
         searchPlaceholder="Search for chats"
+        rightIcon={true}
       />
     </View>
   );

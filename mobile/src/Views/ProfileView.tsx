@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
@@ -9,6 +9,24 @@ import ProfileCard from '../Common/component/Card/ProfileCard';
 
 function ProfileView(): JSX.Element {
   const {logout} = useAuth();
+  const [qrCode, setQrCode] = React.useState(
+    '202200507' + new Date().getTime().toString(),
+  );
+
+  const refreshQrCode = useCallback(() => {
+    const currentTime = new Date().getTime().toString();
+    setQrCode(`202200507${currentTime}`);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refreshQrCode();
+    }, 30000); // Refresh every 30 seconds
+
+    // Cleanup function to clear the interval when the component unmounts or changes
+    return () => clearInterval(intervalId);
+  }, [refreshQrCode]); // Empty dependency array ensures that this effect runs only once after the initial render
+
   return (
     <View
       style={{
@@ -24,11 +42,7 @@ function ProfileView(): JSX.Element {
           avatar="https://picsum.photos/720"
         />
         <View style={ScreensStyles.marginTop}>
-          <QrCard
-            onPress={() => console.log('QrCard')}
-            title="QrCard"
-            qr="text0"
-          />
+          <QrCard onPress={() => refreshQrCode()} title="QrCard" qr={qrCode} />
         </View>
         <Button
           mode="outlined"

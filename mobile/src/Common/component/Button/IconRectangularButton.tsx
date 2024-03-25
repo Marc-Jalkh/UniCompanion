@@ -22,7 +22,8 @@ function IconRectangularButton(props: IconButtonProps): JSX.Element {
       style={{
         backgroundColor: theme.colors.surface,
         ...ScreensStyles.fullHeight,
-      }}>
+      }}
+      onPress={onPress}>
       <Card.Content>
         <IconButton
           icon={icon}

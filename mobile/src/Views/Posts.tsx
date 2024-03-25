@@ -49,6 +49,7 @@ function Posts(): React.JSX.Element {
         {post.map(item => (
           <PostCard
             onPress={item.onPress}
+            key={item.title}
             image={item.image}
             title={item.title}
             description={item.description}

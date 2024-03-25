@@ -7,6 +7,10 @@ import LoginView from '../Views/LoginView';
 import Posts from '../Views/Posts';
 import ForgotPassView from '../Views/ForgotPassword';
 import Post from '../Views/SinglePost';
+import PeopleView from '../Views/PeopleView';
+import WalletView from '../Views/WalletView';
+import GradesView from '../Views/GradesView';
+import CoursesView from '../Views/CoursesView';
 
 type Routes = {
   Login: undefined;
@@ -17,6 +21,10 @@ type Routes = {
   sadBoarding: undefined;
   ForgotPass: undefined;
   Post: {param1: string};
+  People: undefined;
+  Wallet: undefined;
+  Grades: undefined;
+  Courses: undefined;
 };
 
 const StackNavigator = (): React.JSX.Element => {
@@ -31,6 +39,10 @@ const StackNavigator = (): React.JSX.Element => {
           <Stack.Screen name="TabView" component={TabView} />
           <Stack.Screen name="Posts" component={Posts} />
           <Stack.Screen name="Post" component={Post} />
+          <Stack.Screen name="People" component={PeopleView} />
+          <Stack.Screen name="Wallet" component={WalletView} />
+          <Stack.Screen name="Grades" component={GradesView} />
+          <Stack.Screen name="Courses" component={CoursesView} />
         </Stack.Group>
       ) : (
         <Stack.Group>

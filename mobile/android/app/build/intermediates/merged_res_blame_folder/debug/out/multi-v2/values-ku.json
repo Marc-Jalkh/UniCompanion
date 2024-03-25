@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.unicompanion.app-mergeDebugResources-26:/values-ku/values-ku.xml",
+            "outputFile": "com.unicompanion.app-mergeDebugResources-34:/values-ku/values-ku.xml",
             "map": [
                 {
-                    "source": "/Users/marcjalkh/.gradle/caches/transforms-3/d10d040f6dc36d35e250d48d5ebb15bd/transformed/jetified-react-android-0.73.2-debug/res/values-ku/values-ku.xml",
+                    "source": "/Users/marcjalkh/.gradle/caches/transforms-3/b4db2f23f2ab214a51186ce21dfe946e/transformed/jetified-react-android-0.73.4-debug/res/values-ku/values-ku.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

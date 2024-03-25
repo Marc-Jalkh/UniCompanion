@@ -6,6 +6,7 @@ import {Text, useTheme} from 'react-native-paper';
 import ImageButtonCard from '../Common/component/Card/ImageButtonCard';
 import IconRectangularButton from '../Common/component/Button/IconRectangularButton';
 import ProgressCard from '../Common/component/Card/ProgressCard';
+import {useNavigation} from '@react-navigation/native';
 
 const ForYouStyles = StyleSheet.create({
   halfScreen: {
@@ -16,6 +17,7 @@ const ForYouStyles = StyleSheet.create({
 
 function ForYouView(): React.JSX.Element {
   const theme = useTheme();
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -45,7 +47,7 @@ function ForYouView(): React.JSX.Element {
                   ...ScreensStyles.smallPaddingBottom,
                 }}>
                 <IconRectangularButton
-                  onPress={() => console.log('Create Post')}
+                  onPress={() => navigation.navigate('Wallet')}
                   icon="plus"
                   title="Wallet"
                 />
@@ -56,7 +58,7 @@ function ForYouView(): React.JSX.Element {
                   ...ScreensStyles.smallPaddingTop,
                 }}>
                 <IconRectangularButton
-                  onPress={() => console.log('Create Post')}
+                  onPress={() => navigation.navigate('Grades')}
                   icon="plus"
                   title="Grade"
                 />
@@ -67,6 +69,7 @@ function ForYouView(): React.JSX.Element {
             major="Computer Science"
             level="Bachelor degree"
             progress={0.5}
+            onPress={() => navigation.navigate('Courses')}
           />
         </View>
       </View>

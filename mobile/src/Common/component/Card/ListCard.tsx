@@ -39,9 +39,13 @@ function ListCard(item: SearchableItem): React.JSX.Element {
         />
         <View style={cardStyle.text}>
           <Text variant="titleMedium">{item.title}</Text>
-          <Text variant="labelMedium" style={{color: theme.colors.onSecondary}}>
-            {item.subTitle}
-          </Text>
+          {item.subTitle === null ? null : (
+            <Text
+              variant="labelMedium"
+              style={{color: theme.colors.onSecondary}}>
+              {item.subTitle}
+            </Text>
+          )}
         </View>
       </View>
       <Text

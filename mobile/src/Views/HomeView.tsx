@@ -1,6 +1,6 @@
 // import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {Linking, ScrollView, TouchableOpacity, View} from 'react-native';
 import {Text, useTheme} from 'react-native-paper';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
@@ -36,22 +36,28 @@ function HomeView(): React.JSX.Element {
             ...ScreensStyles.marginTop,
           }}>
           <RoundButton
-            onPress={() => console.log('Create Post')}
+            onPress={() =>
+              Linking.openURL('https://myusek.usek.edu.lb/banner-sis')
+            }
             icon="plus"
-            title="Wallet"
+            title="My Usek"
           />
           <RoundButton
-            onPress={() => console.log('Create Post')}
+            onPress={() =>
+              Linking.openURL(
+                'https://banner-self.usek.edu.lb/StudentSelfService',
+              )
+            }
             icon="plus"
-            title="Wallet"
+            title="Banner"
           />
           <RoundButton
-            onPress={() => console.log('Create Post')}
+            onPress={() => Linking.openURL('https://elearning.usek.edu.lb/')}
             icon="plus"
-            title="Wallet"
+            title="E-Learning"
           />
           <RoundButton
-            onPress={() => console.log('Create Post')}
+            onPress={() => navigation.navigate('Wallet')}
             icon="plus"
             title="Wallet"
           />

@@ -7,11 +7,18 @@ class ProgressCardProps {
   major: string;
   level: string;
   progress: number;
+  onPress: () => void;
 
-  constructor(major: string, level: string, progress: number) {
+  constructor(
+    major: string,
+    level: string,
+    progress: number,
+    onPress: () => void,
+  ) {
     this.major = major;
     this.level = level;
     this.progress = progress;
+    this.onPress = onPress;
   }
 }
 
@@ -62,6 +69,7 @@ function ProgressCard(_props: ProgressCardProps): React.JSX.Element {
         backgroundColor: theme.colors.surface,
         ...ScreensStyles.marginTop,
       }}
+      onPress={_props.onPress}
       contentStyle={cardStyle.spacing}>
       <Card.Title
         titleStyle={{...cardStyle.subTtitle}}
