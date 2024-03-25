@@ -23,6 +23,9 @@ export const ScreensStyles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
   },
+  marginTopPercentage: {
+    marginTop: '7%',
+  },
   marginTop: {
     marginTop: 20,
   },
@@ -76,10 +79,18 @@ export const ScreensStyles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
+  verticalContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
   customButton: {
     textAlign: 'center',
     borderRadius: 10,
     width: '100%',
+  },
+  fullHeightContainer: {
+    height: '100%',
   },
   text: {
     fontSize: 24,

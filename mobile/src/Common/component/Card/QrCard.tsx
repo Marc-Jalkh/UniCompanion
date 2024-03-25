@@ -21,6 +21,7 @@ const cardStyle = StyleSheet.create({
   },
   margin: {
     margin: 12,
+    marginTop: 7,
   },
   cover: {
     justifyContent: 'center',
@@ -34,7 +35,7 @@ const cardStyle = StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 
@@ -47,11 +48,6 @@ function QrCard(_props: QrCardProps): React.JSX.Element {
       onPress={_props.onPress}>
       <Card.Content>
         <Text style={cardStyle.title}>{_props.title}</Text>
-        {/* <QRCode
-          value={_props.qr}
-          color={theme.colors.secondary}
-          size={200} // Set the size of the QR code
-        /> */}
         <View style={cardStyle.center}>
           <QRCode value={_props.qr} size={250} color={theme.colors.secondary} />
         </View>

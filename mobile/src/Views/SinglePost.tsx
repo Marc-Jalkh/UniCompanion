@@ -20,7 +20,7 @@ const postStyle = StyleSheet.create({
 
 function Post(): React.JSX.Element {
   const route = useRoute();
-  const param1Value = route.params?.param1;
+  const param1Value: string = route.params?.param1;
 
   const post = {
     image: 'https://picsum.photos/720',

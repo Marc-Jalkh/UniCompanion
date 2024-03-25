@@ -18,7 +18,6 @@ export function useCustomApi<Api extends (...args: any[]) => Promise<any>>(
         errorMessage !== undefined ||
         data !== undefined
       ) {
-        console.log('returning');
         return;
       }
       setErrorMessage(undefined);
@@ -37,10 +36,26 @@ export function useCustomApi<Api extends (...args: any[]) => Promise<any>>(
     [api, data, errorMessage, isLoading],
   );
 
+  const refresh = useCallback(() => {
+    if (isLoading || !api) {
+      return;
+    }
+    api()
+      .then(apiData => {
+        setErrorMessage(undefined);
+        setData(apiData);
+      })
+      .catch((error: any | Error) => {
+        console.log(error);
+        setErrorMessage('Something went wrong!');
+      });
+  }, [api, isLoading]);
+
   return {
     isLoading,
     errorMessage,
     data,
     load,
+    refresh,
   };
 }

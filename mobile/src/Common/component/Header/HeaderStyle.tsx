@@ -12,11 +12,26 @@ export const headerStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     height: 30,
-    marginHorizontal: 19,
+    paddingHorizontal: 19,
+    alignItems: 'center',
+  },
+  chatContainerVariant: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    height: 60,
+    paddingHorizontal: 19,
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  name: {
+    fontSize: 22,
+    fontWeight: '500',
+  },
+  status: {
+    fontSize: 14,
   },
   icon: {
     width: 45,

@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {IconButton, Text, useTheme} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class RoundButtonProps {
   onPress: () => void;
@@ -32,7 +33,10 @@ function RoundButton(props: RoundButtonProps): React.JSX.Element {
   return (
     <View style={RoundButtonStyle.container}>
       <IconButton
-        icon={props.icon}
+        // eslint-disable-next-line react/no-unstable-nested-components
+        icon={() => (
+          <Icon name={props.icon} size={40} color={theme.colors.primary} />
+        )}
         mode="contained"
         iconColor={theme.colors.primary}
         containerColor={theme.colors.surface}

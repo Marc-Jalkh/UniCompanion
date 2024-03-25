@@ -11,6 +11,8 @@ import PeopleView from '../Views/PeopleView';
 import WalletView from '../Views/WalletView';
 import GradesView from '../Views/GradesView';
 import CoursesView from '../Views/CoursesView';
+import SingleChat from '../Views/SingleChat';
+import CampusMap from '../Views/CampusMap';
 
 type Routes = {
   Login: undefined;
@@ -25,6 +27,8 @@ type Routes = {
   Wallet: undefined;
   Grades: undefined;
   Courses: undefined;
+  SingleChat: {param1: string};
+  'Campus Map': undefined;
 };
 
 const StackNavigator = (): React.JSX.Element => {
@@ -43,6 +47,8 @@ const StackNavigator = (): React.JSX.Element => {
           <Stack.Screen name="Wallet" component={WalletView} />
           <Stack.Screen name="Grades" component={GradesView} />
           <Stack.Screen name="Courses" component={CoursesView} />
+          <Stack.Screen name="SingleChat" component={SingleChat} />
+          <Stack.Screen name="Campus Map" component={CampusMap} />
         </Stack.Group>
       ) : (
         <Stack.Group>

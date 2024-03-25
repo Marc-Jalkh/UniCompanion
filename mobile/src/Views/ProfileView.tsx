@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {Button, useTheme} from 'react-native-paper';
@@ -34,7 +34,8 @@ function ProfileView(): JSX.Element {
         backgroundColor: useTheme().colors.background,
       }}>
       <HeaderView />
-      <View style={ScreensStyles.tabContainer}>
+      <ScrollView
+        style={[ScreensStyles.tabContainer, ScreensStyles.fullHeight]}>
         <ProfileCard
           name="Marc El Jalkh  "
           faculty="Arts & Sciences"
@@ -42,7 +43,7 @@ function ProfileView(): JSX.Element {
           avatar="https://picsum.photos/720"
         />
         <View style={ScreensStyles.marginTop}>
-          <QrCard onPress={() => refreshQrCode()} title="QrCard" qr={qrCode} />
+          <QrCard onPress={() => refreshQrCode()} title={qrCode} qr={qrCode} />
         </View>
         <Button
           mode="outlined"
@@ -50,7 +51,7 @@ function ProfileView(): JSX.Element {
           onPress={() => logout()}>
           Logout
         </Button>
-      </View>
+      </ScrollView>
     </View>
   );
 }

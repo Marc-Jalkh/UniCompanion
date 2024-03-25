@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {Text, useTheme} from 'react-native-paper';
@@ -25,54 +25,61 @@ function ForYouView(): React.JSX.Element {
         backgroundColor: theme.colors.background,
       }}>
       <HeaderView />
-      <View
-        style={{...ScreensStyles.tabContainer, ...ScreensStyles.fullHeight}}>
-        <View>
-          <Text style={{color: theme.colors.onSecondary}}>Quote:</Text>
-          <Text variant="titleMedium">" Quote From Api "</Text>
-        </View>
-        <View style={ScreensStyles.verticalMargin}>
-          <View
-            style={{
-              ...ScreensStyles.fullWidth,
-              ...ForYouStyles.halfScreen,
-            }}>
-            <View style={{...ScreensStyles.halfScreen}}>
-              <ImageButtonCard onPress={() => {}} />
-            </View>
-            <View style={ScreensStyles.halfScreen}>
-              <View
-                style={{
-                  ...ScreensStyles.halfHeight,
-                  ...ScreensStyles.smallPaddingBottom,
-                }}>
-                <IconRectangularButton
-                  onPress={() => navigation.navigate('Wallet')}
-                  icon="plus"
-                  title="Wallet"
-                />
-              </View>
-              <View
-                style={{
-                  ...ScreensStyles.halfHeight,
-                  ...ScreensStyles.smallPaddingTop,
-                }}>
-                <IconRectangularButton
-                  onPress={() => navigation.navigate('Grades')}
-                  icon="plus"
-                  title="Grade"
-                />
-              </View>
-            </View>
+      <ScrollView style={{...ScreensStyles.tabContainer}}>
+        <View style={[ScreensStyles.verticalMargin, ScreensStyles.fullHeight]}>
+          <View>
+            <Text style={{color: theme.colors.onSecondary}}>Quote:</Text>
+            <Text variant="titleMedium">" Quote From Api "</Text>
           </View>
-          <ProgressCard
-            major="Computer Science"
-            level="Bachelor degree"
-            progress={0.5}
-            onPress={() => navigation.navigate('Courses')}
-          />
+          <View
+            style={[
+              ScreensStyles.marginTopPercentage,
+              ScreensStyles.fullHeight,
+            ]}>
+            <View
+              style={{
+                ...ScreensStyles.fullWidth,
+                ...ForYouStyles.halfScreen,
+              }}>
+              <View style={{...ScreensStyles.halfScreen}}>
+                <ImageButtonCard
+                  onPress={() => navigation.navigate('Campus Map')}
+                />
+              </View>
+              <View style={ScreensStyles.halfScreen}>
+                <View
+                  style={{
+                    ...ScreensStyles.halfHeight,
+                    ...ScreensStyles.smallPaddingBottom,
+                  }}>
+                  <IconRectangularButton
+                    onPress={() => navigation.navigate('Wallet')}
+                    icon="plus"
+                    title="Wallet"
+                  />
+                </View>
+                <View
+                  style={{
+                    ...ScreensStyles.halfHeight,
+                    ...ScreensStyles.smallPaddingTop,
+                  }}>
+                  <IconRectangularButton
+                    onPress={() => navigation.navigate('Grades')}
+                    icon="plus"
+                    title="Grade"
+                  />
+                </View>
+              </View>
+            </View>
+            <ProgressCard
+              major="Computer Science"
+              level="Bachelor degree"
+              progress={0.5}
+              onPress={() => navigation.navigate('Courses')}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

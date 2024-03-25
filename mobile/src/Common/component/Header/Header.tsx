@@ -61,7 +61,7 @@ export function HeaderVariantView(): React.JSX.Element {
     return unsubscribe;
   }, [navigation]);
   return (
-    <View style={headerStyles.containerVariant}>
+    <View style={[headerStyles.containerVariant]}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={{...headerStyles.title}}>{'<  '} </Text>
       </TouchableOpacity>
