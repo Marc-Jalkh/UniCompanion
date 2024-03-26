@@ -18,8 +18,10 @@ const login = async (req, res) => {
             return;
         }
 
+        const HASH_KEY = process.env.HASH_KEY || 'key'
+
         // Hash the provided password
-        const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+        const hashedPassword = CryptoJS.HmacSHA256(password, HASH_KEY).toString(CryptoJS.enc.Hex);
 
         // Compare the hashed passwords
         if (user.password !== hashedPassword) {
