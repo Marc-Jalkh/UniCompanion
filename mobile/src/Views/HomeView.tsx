@@ -117,9 +117,7 @@ function HomeView(): React.JSX.Element {
             {data?.map((post: Post, index: number) => (
               <PostCard
                 key={index}
-                onPress={() =>
-                  navigation.navigate('Post', {param1: post.title})
-                }
+                onPress={() => navigation.navigate('Post', {param1: post})}
                 image={post.image}
                 title={post.title}
                 description={post.content.slice(0, 100) + '...'}

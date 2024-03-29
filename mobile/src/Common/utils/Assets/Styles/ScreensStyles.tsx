@@ -5,10 +5,15 @@ export const ScreensStyles = StyleSheet.create({
     flex: 1,
   },
   onBoardingContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
-    justifyContent: 'center',
     margin: 30,
+  },
+  OnBoardingImage: {
+    height: 130,
+    width: '100%',
+    objectFit: 'contain',
+    marginTop: 50,
   },
   tabContainer: {
     margin: 15,
@@ -66,6 +71,9 @@ export const ScreensStyles = StyleSheet.create({
   verticalMargin: {
     marginTop: 'auto',
     marginBottom: 'auto',
+  },
+  marginBottom: {
+    marginBottom: 80,
   },
   paddingHorizontal: {
     paddingHorizontal: 20,

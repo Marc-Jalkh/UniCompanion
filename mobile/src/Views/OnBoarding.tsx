@@ -13,11 +13,15 @@ function OnBoardingView(): React.JSX.Element {
         ...ScreensStyles.container,
         backgroundColor: themeMode.colors.background,
       }}>
-      <View style={ScreensStyles.onBoardingContainer}>
+      <View
+        style={[
+          ScreensStyles.onBoardingContainer,
+          ScreensStyles.alignCenter,
+          ScreensStyles.marginBottom,
+        ]}>
         <Text
           variant="displaySmall"
           style={{
-            ...ScreensStyles.alignCenter,
             color: themeMode.colors.secondary,
           }}>
           Come & Learn

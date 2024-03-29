@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {HeaderVariantView} from '../Common/component/Header/Header';
@@ -20,15 +20,20 @@ const postStyle = StyleSheet.create({
 
 function Post(): React.JSX.Element {
   const route = useRoute();
-  const param1Value: string = route.params?.param1;
+  const param1Value: Post = route.params?.param1;
+  const [post, setPost] = useState(param1Value);
 
-  const post = {
-    image: 'https://picsum.photos/720',
-    published: '2 weeks ago',
-    title: 'dsad1' + param1Value,
-    description:
-      'Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum',
-  };
+  useEffect(() => {
+    setPost(param1Value);
+  }, [param1Value]);
+
+  // const post = {
+  //   image: 'https://picsum.photos/720',
+  //   published: '2 weeks ago',
+  //   title: 'dsad1' + param1Value,
+  //   description:
+  //     'Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum',
+  // };
   const theme = useTheme();
   return (
     <View
@@ -45,7 +50,7 @@ function Post(): React.JSX.Element {
           {post.title}
         </Text>
         <Text style={{color: theme.colors.onSecondary}} variant="titleSmall">
-          {post.published}
+          {post.date}
         </Text>
         <Divider
           style={{
@@ -56,7 +61,7 @@ function Post(): React.JSX.Element {
           bold={true}
         />
         <Text style={postStyle.veritcal} variant="bodyLarge">
-          {post.description}
+          {post.content}
         </Text>
       </ScrollView>
     </View>

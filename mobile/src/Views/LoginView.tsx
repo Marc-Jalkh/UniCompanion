@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {Image, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
@@ -19,16 +19,17 @@ function LoginView(): React.JSX.Element {
         ...ScreensStyles.container,
         backgroundColor: themeMode.colors.background,
       }}>
-      <Text
-        variant="displaySmall"
-        style={{
-          ...ScreensStyles.alignCenter,
-          ...ScreensStyles.marginTop,
-          color: themeMode.colors.secondary,
-        }}>
-        UniCompaniøn
-      </Text>
-      <View style={ScreensStyles.onBoardingContainer}>
+      <View style={[ScreensStyles.container, ScreensStyles.alignCenter]}>
+        <Image
+          style={[
+            ScreensStyles.OnBoardingImage,
+            {tintColor: themeMode.colors.secondary},
+          ]}
+          source={require('../Common/utils/Assets/img/usek.png')}
+        />
+      </View>
+      <View
+        style={[ScreensStyles.onBoardingContainer, ScreensStyles.marginTop]}>
         <TextInput
           style={ScreensStyles.fullWidth}
           mode="outlined"

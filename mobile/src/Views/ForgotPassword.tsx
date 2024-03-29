@@ -1,8 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert, Image, StyleSheet, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
+
+const styles = StyleSheet.create({
+  invisibale: {
+    opacity: 0,
+  },
+});
 
 function ForgotPassView(): React.JSX.Element {
   const themeMode = useTheme();
@@ -20,16 +26,28 @@ function ForgotPassView(): React.JSX.Element {
         ...ScreensStyles.container,
         backgroundColor: themeMode.colors.background,
       }}>
-      <Text
-        variant="displaySmall"
-        style={{
-          ...ScreensStyles.alignCenter,
-          ...ScreensStyles.marginTop,
-          color: themeMode.colors.secondary,
-        }}>
-        UniCompaniøn
-      </Text>
+      <View style={[ScreensStyles.container, ScreensStyles.alignCenter]}>
+        <Image
+          style={[
+            ScreensStyles.OnBoardingImage,
+            {tintColor: themeMode.colors.secondary},
+          ]}
+          source={require('../Common/utils/Assets/img/usek.png')}
+        />
+      </View>
       <View style={ScreensStyles.onBoardingContainer}>
+        <TextInput
+          style={[ScreensStyles.fullWidth, styles.invisibale]}
+          mode="outlined"
+          label="Email: "
+          placeholder="Enter your Email"
+          value={email}
+          onChangeText={text => setEmail(text)}
+          textColor="#00000000"
+          placeholderTextColor="#00000000"
+          outlineColor="#00000000"
+          disabled={true}
+        />
         <TextInput
           style={ScreensStyles.fullWidth}
           mode="outlined"

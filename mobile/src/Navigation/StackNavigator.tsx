@@ -22,7 +22,7 @@ type Routes = {
   id: {id: string};
   sadBoarding: undefined;
   ForgotPass: undefined;
-  Post: {param1: string};
+  Post: {param1: Post};
   People: undefined;
   Wallet: undefined;
   Grades: undefined;
