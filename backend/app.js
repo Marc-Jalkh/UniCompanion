@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
 const verifyToken = require('./controllers/authorization.js');
+const chatRoute = require('./routes/chat.js');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoute);
+app.use('/chat', chatRoute);
 
 app.use(verifyToken);
 
