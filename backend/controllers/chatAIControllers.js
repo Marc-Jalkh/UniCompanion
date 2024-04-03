@@ -1,18 +1,19 @@
 require('dotenv').config();
-const knex = require('knex');
-
-const dialogflow = require('dialogflow').v2beta1;
-const db = require('../config/dbconfig.js');
 const sessionClient = require('../config/dfconfig.js');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const chatAI = async (req, res) => {
   const { message } = req.body;
-  const sessionId = "b2f763a9-9e5f-fd3c-2b26-0318b3cfcede11";
-
+  const token = req.headers.token;
+  //const decodedToken = jwt.verify(token, process.env.JWT_SECRET) || {id: '11'};
+  //const userID = decodedToken.id;
+  const userID = '11';
+  const sessionId = process.env.SESSION_ID + userID;
   // Create a new session
   const projectId = process.env.GOOGLE_PROJECT_ID
   const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-  console.log('session path: ', sessionPath)
+  
   // The text query request.
   const request = {
     session: sessionPath,
@@ -39,19 +40,71 @@ const chatAI = async (req, res) => {
 
   // Send request and log result
   const responses = await sessionClient.detectIntent(request);
-  console.log('Detected intent');
   const result = responses[0].queryResult;
-  console.log(`  Query: ${result.queryText}`);
-  console.log(`  Response: ${result.fulfillmentText}`);
-  if (result.intent) {
-    console.log(`  Intent: ${result.intent.displayName}`);
-  } else {
-    console.log(`  No intent matched.`);
+
+  const dialog = {
+    request: message,
+    response:  result.fulfillmentText,
+    timestamp: new Date().toISOString(),
+  };
+
+  let jsonData = [];
+
+  const filePath = './chatDialogs/dialog' + userID + '.json';
+  
+  // Check if file exists
+  if (fs.existsSync(filePath)) {
+    // Read existing JSON file content
+    try {
+      const fileContent = fs.readFileSync(filePath);
+      jsonData = JSON.parse(fileContent);
+      console.log("JSON file read successfully.");
+    } catch (error) {
+      console.error("Error reading JSON file:", error);
+    }
   }
+  
+  // Append new dialog to JSON data
+  jsonData.push(dialog);
+  
+  // Write updated JSON data back to the file
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 2));
+    console.log("Dialog appended to JSON file.");
+  } catch (error) {
+    console.error("Error writing to JSON file:", error);
+  }
+  
+  // Send response
   res.json(result);
 }
-  ;
+
+const history = async (req, res) => {
+  console.log("History request received.")
+  const token = req.headers.token;
+  //const decodedToken = jwt.verify(token, process.env.JWT_SECRET) || {id: '11'};
+  //const userID = decodedToken.id;
+  const userID = '11';
+  const filePath = './chatDialogs/dialog' + userID + '.json';
+  let jsonData = [];
+  
+  // Check if file exists
+  if (fs.existsSync(filePath)) {
+    // Read existing JSON file content
+    try {
+      const fileContent = fs.readFileSync(filePath);
+      jsonData = JSON.parse(fileContent);
+      console.log("JSON file read successfully.");
+    } catch (error) {
+      console.error("Error reading JSON file:", error);
+    }
+  }
+  
+  // Send response
+  res.json(jsonData);
+}
 
 module.exports = {
-  chatAI
+  chatAI,
+  history
 }
