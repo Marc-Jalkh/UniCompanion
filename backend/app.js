@@ -25,12 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/login', loginRoute);
 app.use('/chat', chatRoute);
 
-app.use(verifyToken);
-
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.use('/', indexRouter);
 
+
+app.use(verifyToken);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
