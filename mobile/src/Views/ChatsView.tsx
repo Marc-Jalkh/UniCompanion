@@ -5,8 +5,35 @@ import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
 import {SearchableList} from '../Common/component/SearchableList/SearchableList';
 import {useNavigation} from '@react-navigation/native';
+import {formatDate} from '../Common/utils/FormatTime';
 
 function ChatsView(): JSX.Element {
+  const data: Chat[] = [
+    {
+      id: '1',
+      name: 'Marc',
+      lastMessage: 'Last Message',
+      lastMessageDate: '2024-04-01T05:01:00Z',
+      unreadMessages: 1,
+      image: 'https://via.placeholder.com/150',
+    },
+    {
+      id: '2',
+      name: 'Marcs',
+      lastMessage: 'Last Message',
+      lastMessageDate: '2024-03-31T00:00:00Z',
+      unreadMessages: 1,
+      image: 'https://via.placeholder.com/150',
+    },
+    {
+      id: '3',
+      name: 'Marcx',
+      lastMessage: 'Last Message',
+      lastMessageDate: '2024-01-01T00:00:00Z',
+      unreadMessages: 1,
+      image: 'https://via.placeholder.com/150',
+    },
+  ];
   const navigation = useNavigation();
   return (
     <View
@@ -24,20 +51,17 @@ function ChatsView(): JSX.Element {
             onPress: () => navigation.navigate('SingleChat', {param1: 'Title'}),
             rightText: 'Right Text',
           },
-          {
-            image: 'https://via.placeholder.com/150',
-            title: 'Marc',
-            subTitle: 'SubTitle',
-            onPress: () => navigation.navigate('SingleChat', {param1: 'Marc'}),
-            rightText: 'Right Text',
-          },
-          {
-            image: 'https://via.placeholder.com/150',
-            title: 'Carl',
-            subTitle: 'SubTitle',
-            onPress: () => navigation.navigate('SingleChat', {param1: 'Carl'}),
-            rightText: 'Right Text',
-          },
+          ...data.map(chat => {
+            return {
+              image: chat.image,
+              title: chat.name,
+              subTitle: chat.lastMessage,
+              onPress: () =>
+                navigation.navigate('SingleChat', {param1: chat.name}),
+
+              rightText: formatDate(chat.lastMessageDate),
+            };
+          }),
         ]}
         isSearchable={true}
         searchPlaceholder="Search for chats"

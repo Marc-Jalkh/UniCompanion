@@ -1,4 +1,4 @@
-class HomeData {
+export class HomeData {
   welcomeMessage: string;
   user: string;
   posts: Post[];

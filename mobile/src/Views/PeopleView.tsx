@@ -6,6 +6,29 @@ import {useTheme} from 'react-native-paper';
 import {SearchableList} from '../Common/component/SearchableList/SearchableList';
 
 function PeopleView(): JSX.Element {
+  const data: User[] = [
+    {
+      id: 1,
+      name: 'Marc',
+      image: 'https://via.placeholder.com/150',
+      usekId: '202200507',
+      faculty: '',
+    },
+    {
+      id: 1,
+      name: 'Marcs',
+      image: 'https://via.placeholder.com/150',
+      usekId: '202200507',
+      faculty: '',
+    },
+    {
+      id: 1,
+      name: 'Marcx',
+      image: 'https://via.placeholder.com/150',
+      usekId: '202200507',
+      faculty: '',
+    },
+  ];
   return (
     <View
       style={{
@@ -14,29 +37,15 @@ function PeopleView(): JSX.Element {
       }}>
       <HeaderVariantView />
       <SearchableList
-        items={[
-          {
-            image: 'https://via.placeholder.com/150',
-            title: 'Title',
-            subTitle: null,
-            onPress: () => console.log('On Press'),
-            rightText: null,
-          },
-          {
-            image: 'https://via.placeholder.com/150',
-            title: 'Marc',
-            subTitle: null,
-            onPress: () => console.log('On Press'),
-            rightText: null,
-          },
-          {
-            image: 'https://via.placeholder.com/150',
-            title: 'Carl',
-            subTitle: null,
+        items={data.map(user => {
+          return {
+            image: user.image,
+            title: user.name,
+            subTitle: user.usekId,
             onPress: () => console.log('On Press'),
             rightText: 'Right Text',
-          },
-        ]}
+          };
+        })}
         isSearchable={true}
         searchPlaceholder="Search for chats"
         rightIcon={false}

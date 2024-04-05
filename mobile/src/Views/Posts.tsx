@@ -1,38 +1,35 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import PostCard, {PostCardProps} from '../Common/component/Card/PostCard';
+import PostCard from '../Common/component/Card/PostCard';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {HeaderVariantView} from '../Common/component/Header/Header';
 import {Text, useTheme} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 function Posts(): React.JSX.Element {
-  const post: PostCardProps[] = [
+  const data: Post[] = [
     {
-      onPress: () => console.log('Post'),
+      title: 'First Post',
+      content: 'description',
+      date: '2024-04-01T05:01:00Z',
       image: 'https://picsum.photos/720',
-      title: 'dsad1',
-      description: 'dsadsadasda',
     },
     {
-      onPress: () => console.log('Post'),
+      title: 'second Post',
+      content: 'description',
+      date: '2024-04-01T05:01:00Z',
       image: 'https://picsum.photos/720',
-      title: 'dsad2',
-      description: 'dsadsadasda',
     },
     {
-      onPress: () => console.log('Post'),
+      title: 'third Post',
+      content: 'description',
+      date: '2024-03-01T05:01:00Z',
       image: 'https://picsum.photos/720',
-      title: 'dsa3d',
-      description: 'dsadsadasda',
-    },
-    {
-      onPress: () => console.log('Post'),
-      image: 'https://example.com/image.jpg',
-      title: 'dsad4',
-      description: 'dsadsadasda',
     },
   ];
+
   const theme = useTheme();
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -46,13 +43,13 @@ function Posts(): React.JSX.Element {
         <View>
           <Text variant="titleMedium">Check out the latest posts!</Text>
         </View>
-        {post.map(item => (
+        {data.map(item => (
           <PostCard
-            onPress={item.onPress}
+            onPress={() => navigation.navigate('Post', {param1: item})}
             key={item.title}
             image={item.image}
             title={item.title}
-            description={item.description}
+            description={item.content}
           />
         ))}
       </ScrollView>

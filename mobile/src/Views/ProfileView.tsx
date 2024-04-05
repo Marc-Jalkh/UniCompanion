@@ -9,14 +9,24 @@ import ProfileCard from '../Common/component/Card/ProfileCard';
 
 function ProfileView(): JSX.Element {
   const {logout} = useAuth();
-  const [qrCode, setQrCode] = React.useState(
-    '202200507' + new Date().getTime().toString(),
-  );
+  const data: User = {
+    id: 1,
+    name: 'Marc',
+    image: 'https://via.placeholder.com/150',
+    usekId: '202200507',
+    faculty: '',
+  };
+
+  const [qrCode, setQrCode] = React.useState('error');
 
   const refreshQrCode = useCallback(() => {
     const currentTime = new Date().getTime().toString();
-    setQrCode(`202200507${currentTime}`);
-  }, []);
+    setQrCode(`${data.usekId}${currentTime}`);
+  }, [data.usekId]);
+
+  useEffect(() => {
+    refreshQrCode();
+  }, [refreshQrCode]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -37,10 +47,10 @@ function ProfileView(): JSX.Element {
       <ScrollView
         style={[ScreensStyles.tabContainer, ScreensStyles.fullHeight]}>
         <ProfileCard
-          name="Marc El Jalkh  "
-          faculty="Arts & Sciences"
-          id="202200507"
-          avatar="https://picsum.photos/720"
+          name={data.name}
+          faculty={data.faculty}
+          id={data.usekId}
+          avatar={data.image}
         />
         <View style={ScreensStyles.marginTop}>
           <QrCard onPress={() => refreshQrCode()} title={qrCode} qr={qrCode} />

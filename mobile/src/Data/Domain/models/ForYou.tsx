@@ -1,4 +1,4 @@
-class ForYou {
+export class ForYou {
   degree: string;
   level: string;
   progress: string;

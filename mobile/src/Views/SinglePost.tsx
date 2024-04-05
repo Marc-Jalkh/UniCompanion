@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {HeaderVariantView} from '../Common/component/Header/Header';
 import {Divider, Text, useTheme} from 'react-native-paper';
 import {useRoute} from '@react-navigation/native';
+import {formatDate} from '../Common/utils/FormatTime';
 
 const postStyle = StyleSheet.create({
   image: {
@@ -27,13 +28,6 @@ function Post(): React.JSX.Element {
     setPost(param1Value);
   }, [param1Value]);
 
-  // const post = {
-  //   image: 'https://picsum.photos/720',
-  //   published: '2 weeks ago',
-  //   title: 'dsad1' + param1Value,
-  //   description:
-  //     'Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum Lorum ipsum',
-  // };
   const theme = useTheme();
   return (
     <View
@@ -50,7 +44,7 @@ function Post(): React.JSX.Element {
           {post.title}
         </Text>
         <Text style={{color: theme.colors.onSecondary}} variant="titleSmall">
-          {post.date}
+          {formatDate(post.date)}
         </Text>
         <Divider
           style={{

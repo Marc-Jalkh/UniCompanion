@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useCustomApi} from '../Data/Domain/CustomUseCase';
 import {useGetFromApi} from '../Data/Remote/utils/Helpers';
 import PageLoader from '../Common/component/Loader/PageLoader';
+import {HomeData} from '../Data/Domain/models/HomeData';
 
 function HomeView(): React.JSX.Element {
   const api = useGetFromApi(
@@ -39,8 +40,29 @@ function HomeView(): React.JSX.Element {
       return posts;
     },
   );
-
+  const [dates, setDates] = React.useState(
+    new HomeData(
+      'Good Morning 👋',
+      'Marc Jalkh',
+      [],
+      'Fall 2021',
+      '3.99',
+      '100/100',
+    ),
+  );
   const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    setDates({
+      welcomeMessage: 'Good Morning 👋',
+      user: 'Marc Jalkh',
+      posts: data ?? [],
+      semester: 'Fall 2021',
+      gpa: '3.99',
+      grade: '100/100',
+    });
+  }, [data]);
+
   React.useEffect(() => {
     load();
   }, [load]);
@@ -68,9 +90,9 @@ function HomeView(): React.JSX.Element {
         }>
         <View>
           <Text style={{color: theme.colors.onSecondary}}>
-            Hello text from api 👋
+            {dates.welcomeMessage}
           </Text>
-          <Text variant="titleLarge">Name From Api</Text>
+          <Text variant="titleLarge">{dates.user}</Text>
         </View>
         <View
           style={{
@@ -105,7 +127,13 @@ function HomeView(): React.JSX.Element {
             title="Wallet"
           />
         </View>
-        <IntoCard title="Post" subTitle="Post" gpa="3.99" grade="100/100" />
+        <IntoCard
+          title="Semester:"
+          subTitle={dates.semester}
+          gpa={dates.gpa}
+          grade={dates.grade}
+          onPress={() => navigation.navigate('Grades')}
+        />
         <View style={ScreensStyles.marginTop}>
           <View style={ScreensStyles.horizontalContainerSpaced}>
             <Text variant="titleLarge">Post</Text>
@@ -114,7 +142,7 @@ function HomeView(): React.JSX.Element {
             </TouchableOpacity>
           </View>
           <View style={ScreensStyles.marginTop}>
-            {data?.map((post: Post, index: number) => (
+            {dates.posts.map((post: Post, index: number) => (
               <PostCard
                 key={index}
                 onPress={() => navigation.navigate('Post', {param1: post})}

@@ -7,6 +7,7 @@ import ImageButtonCard from '../Common/component/Card/ImageButtonCard';
 import IconRectangularButton from '../Common/component/Button/IconRectangularButton';
 import ProgressCard from '../Common/component/Card/ProgressCard';
 import {useNavigation} from '@react-navigation/native';
+import {ForYou} from '../Data/Domain/models/ForYou';
 
 const ForYouStyles = StyleSheet.create({
   halfScreen: {
@@ -18,6 +19,12 @@ const ForYouStyles = StyleSheet.create({
 function ForYouView(): React.JSX.Element {
   const theme = useTheme();
   const navigation = useNavigation();
+  const data = new ForYou(
+    'Computer Science',
+    'Bachelor degree',
+    '0.75',
+    'Quote From Api',
+  );
   return (
     <View
       style={{
@@ -29,7 +36,7 @@ function ForYouView(): React.JSX.Element {
         <View style={[ScreensStyles.verticalMargin, ScreensStyles.fullHeight]}>
           <View>
             <Text style={{color: theme.colors.onSecondary}}>Quote:</Text>
-            <Text variant="titleMedium">" Quote From Api "</Text>
+            <Text variant="titleMedium">{data.quote}</Text>
           </View>
           <View
             style={[
@@ -72,9 +79,9 @@ function ForYouView(): React.JSX.Element {
               </View>
             </View>
             <ProgressCard
-              major="Computer Science"
-              level="Bachelor degree"
-              progress={0.5}
+              major={data.degree}
+              level={data.level}
+              progress={parseFloat(data.progress)}
               onPress={() => navigation.navigate('Courses')}
             />
           </View>

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
@@ -10,6 +10,52 @@ import {
   ExpandableCalendar,
 } from 'react-native-calendars';
 import EventCard from '../Common/component/Card/EventCard';
+
+class EventsPersModel {
+  title: string;
+  data: eventData[];
+
+  constructor(title: string, data: eventData[]) {
+    this.title = title;
+    this.data = data;
+  }
+}
+
+class eventData {
+  name: string;
+  timing: string | null;
+  location: string | null;
+
+  constructor(name: string, timing: string | null, location: string | null) {
+    this.name = name;
+    this.timing = timing;
+    this.location = location;
+  }
+}
+
+//eventdomainmodel to EventsPersModel
+function EventDomainModelToEventsPersModel(
+  events: EventDomainModel[],
+): EventsPersModel[] {
+  let eventsPersModel: EventsPersModel[] = [];
+  events.forEach(event => {
+    let data: eventData[] = [];
+    data.push({
+      name: event.title,
+      timing: event.time,
+      location: event.description,
+    });
+    if (eventsPersModel.find(e => e.title === event.date)) {
+      eventsPersModel
+        .find(e => e.title === event.date)
+        ?.data.push(new eventData(event.title, event.time, event.description));
+    } else {
+      eventsPersModel.push(new EventsPersModel(event.date, data));
+    }
+  });
+  return eventsPersModel;
+}
+
 //TODO OPTIMIZE USEREF CALLBACK MEMO EVERYWHERE + functionality
 function CalendarView(): JSX.Element {
   const theme = useTheme();
@@ -23,106 +69,58 @@ function CalendarView(): JSX.Element {
   // const onMonthChange = useCallback(({dateString}) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
-  const ITEMS = useRef([
+  const data = useRef<EventDomainModel[]>([
     {
-      title: '2024-03-10',
-      data: [
-        {
-          name: 'item 1 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {name: 'item 1 - any js object'},
-      ],
+      title: 'item 1 - any js object',
+      time: '14:00',
+      description: '1.45 hours     •     Room E200',
+      date: '2024-03-10',
     },
     {
-      title: '2024-03-11',
-
-      data: [
-        {
-          name: 'item 2 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-      ],
+      title: 'item 2 - any js object',
+      time: '14:00',
+      description: '1.45 hours     •     Room E200',
+      date: '2024-03-11',
     },
+    {
+      title: 'item 3 - any js object',
+      time: '14:00',
+      description: '1.45 hours     •     Room E200',
+      date: '2024-03-12',
+    },
+    {
+      title: 'item 4 - any js object',
+      date: '2024-03-13',
+      time: '14:00',
+      description: '',
+    },
+  ]);
 
+  const [ITEMS, setITEMS] = useState<EventsPersModel[]>([
     {
       title: '2024-03-13',
-      data: [{name: 'item 4 - any js object', height: 80}],
-    },
-    {
-      title: '2024-03-15',
       data: [
-        {name: 'item 4 - any js object', height: 80},
         {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
+          name: '',
+          timing: '',
+          location: '',
         },
       ],
     },
     {
-      title: '2024-04-12',
+      title: '2024-04-13',
       data: [
         {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
-        },
-        {
-          name: 'item 3 - any js object',
-          timing: '14:00',
-          location: '1.45 hours     •     Room E200',
+          name: '',
+          timing: '',
+          location: '',
         },
       ],
     },
   ]);
+  useEffect(() => {
+    setITEMS(EventDomainModelToEventsPersModel(data.current));
+  }, []);
   return (
     <View
       style={{
@@ -131,7 +129,7 @@ function CalendarView(): JSX.Element {
       }}>
       <HeaderView />
       <CalendarProvider
-        date={ITEMS.current[1]?.title}
+        date={ITEMS[1]?.title}
         // onDateChanged={onDateChanged}
         // onMonthChange={onMonthChange}
         showTodayButton
@@ -178,12 +176,11 @@ function CalendarView(): JSX.Element {
           // markedDates={marked.current}
           // leftArrowImageSource={leftArrowIcon}
           // rightArrowImageSource={rightArrowIcon}
-          animateScroll
           // closeOnDayPress={false}
         />
 
         <AgendaList
-          sections={ITEMS.current}
+          sections={ITEMS}
           renderItem={item => (
             <EventCard
               title={item.item.name}

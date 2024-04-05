@@ -8,12 +8,20 @@ class IntroCardProps {
   subTitle: string;
   gpa: string;
   grade: string;
+  onPress: () => void;
 
-  constructor(title: string, subTitle: string, gpa: string, grade: string) {
+  constructor(
+    title: string,
+    subTitle: string,
+    gpa: string,
+    grade: string,
+    onPress: () => void,
+  ) {
     this.title = title;
     this.subTitle = subTitle;
     this.gpa = gpa;
     this.grade = grade;
+    this.onPress = onPress;
   }
 }
 
@@ -57,6 +65,7 @@ function IntoCard(_props: IntroCardProps): React.JSX.Element {
         ...cardStyle.noShadow,
         ...ScreensStyles.marginTop,
       }}
+      onPress={_props.onPress}
       contentStyle={cardStyle.spacing}>
       <Card.Title
         titleStyle={{color: theme.colors.surface, ...cardStyle.title}}
