@@ -11,6 +11,8 @@ const verifyToken = require('./controllers/authorization.js');
 const chatRoute = require('./routes/chat.js');
 const postRoute = require('./routes/post.js');
 const homeRoute = require('./routes/home.js');
+const forYouRoute = require('./routes/forYou.js');
+const eventsRoute = require('./routes/events.js');
 
 var app = express();
 
@@ -36,6 +38,9 @@ app.use(verifyToken);
 
 app.use('/posts', postRoute);
 app.use('/home', homeRoute);
+app.use('/forYou', forYouRoute);
+app.use('/events', eventsRoute);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

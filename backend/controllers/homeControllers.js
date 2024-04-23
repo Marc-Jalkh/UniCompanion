@@ -40,6 +40,10 @@ const getHome = async (req, res) => {
             const grade = parseFloat(result.grade);
             const gpa = convertToGPA(grade);
 
+            if (grade === 0) {
+                return;
+            }
+
             totalWeightedGrades += grade * credits;
             totalCredits += credits;
             totalWeightedGPA += gpa * credits;
