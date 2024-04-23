@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
 const verifyToken = require('./controllers/authorization.js');
 const chatRoute = require('./routes/chat.js');
+const postRoute = require('./routes/post.js');
 
 var app = express();
 
@@ -23,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoute);
-app.use('/chat', chatRoute);
+app.use('/chats', chatRoute);
 
 app.use('/users', usersRouter);
 
@@ -31,6 +32,8 @@ app.use('/', indexRouter);
 
 
 app.use(verifyToken);
+
+app.use('/posts', postRoute);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
