@@ -3,11 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var socketIo = require('socket.io');  // Import Socket.IO
 
+const verifyToken = require('./controllers/authorization.js')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
-const verifyToken = require('./controllers/authorization.js');
 const chatRoute = require('./routes/chat.js');
 const postRoute = require('./routes/post.js');
 const homeRoute = require('./routes/home.js');
@@ -35,7 +36,6 @@ app.use('/users', usersRouter);
 
 app.use('/', indexRouter);
 
-
 app.use(verifyToken);
 
 app.use('/posts', postRoute);
@@ -52,13 +52,13 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
+
+var io = socketIo(); // Create a new instance of Socket.IO
+app.io = io; // Attach Socket.IO instance to the app object to use it later in bin/www
 
 module.exports = app;
