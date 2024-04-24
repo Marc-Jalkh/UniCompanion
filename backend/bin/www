@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
       .first();
 
     if (!chatroom) {
-      const filePath = `./chat_data/chat_${user1_id}_${user2_id}.json`;
+      const filePath = `./chatData/chat_${user1_id}_${user2_id}.json`;
       fs.writeFileSync(filePath, JSON.stringify([])); // Create an empty JSON file for the chatroom
 
       // Insert new chatroom entry in DB

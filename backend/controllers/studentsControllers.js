@@ -103,8 +103,6 @@ const addUser = async(req, res) => {
         password: hashedPassword
     };
 
-    console.log('hi')
-    console.log(modifiedUserData)
     const row = await db('users')
         .insert(modifiedUserData);
 
@@ -114,9 +112,9 @@ const addUser = async(req, res) => {
         return;
     }
 
-    //const role_id = await db('roles').select('role_id').where({ name: role }).first();
+    const role_id = await db('roles').select('role_id').where({ name: role }).first();
 
-    //await db('users_roles').insert({ user_id: row, role_id: 1 })
+    await db('users_roles').insert({ user_id: row, role_id })
 
     
 

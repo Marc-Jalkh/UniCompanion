@@ -42,7 +42,7 @@ app.use('/posts', postRoute);
 app.use('/home', homeRoute);
 app.use('/forYou', forYouRoute);
 app.use('/events', eventsRoute);
-app.use('/finance', financeRoute);
+app.use('/wallet', financeRoute);
 app.use('/courses', coursesRoute);
 
 // catch 404 and forward to error handler

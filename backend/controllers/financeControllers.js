@@ -2,12 +2,22 @@ const db = require('../config/dbconfig.js');
 
 function transformFinances(finances) {
     const grouped = finances.reduce((acc, item) => {
-        console.log(item)
+        let semester = item.semester_id % 10;
+        let year = Math.floor(item.semester_id % 10)
+        if (semester === 1)
+            semester = 'Fall';
+
+        else if (semester === 2)
+            semester = 'Spring';
+
+        else
+            semester = 'Summer';
+
         let total = item.amount
         let discount = item.amount * item.scholarship / 100;
         if (!acc[item.semester_id]) {
             acc[item.semester_id] = {
-                semester_id: item.semester_id,
+                semester_id: semester + ' ' + year + '-' + (year + 1),
                 finances: [],
                 discount: 0,
                 total: 0
