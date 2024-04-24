@@ -13,6 +13,8 @@ const postRoute = require('./routes/post.js');
 const homeRoute = require('./routes/home.js');
 const forYouRoute = require('./routes/forYou.js');
 const eventsRoute = require('./routes/events.js');
+const financeRoute = require('./routes/finance.js');
+const coursesRoute = require('./routes/courses.js');
 
 var app = express();
 
@@ -40,6 +42,8 @@ app.use('/posts', postRoute);
 app.use('/home', homeRoute);
 app.use('/forYou', forYouRoute);
 app.use('/events', eventsRoute);
+app.use('/finance', financeRoute);
+app.use('/courses', coursesRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

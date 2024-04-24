@@ -4,7 +4,7 @@ const controller = require('../controllers/forYouControllers.js');
   
 const router = Router(); 
 
-router.get('/get', controller.getHome);
+router.get('/', controller.getHome);
 
   
 module.exports = router;
