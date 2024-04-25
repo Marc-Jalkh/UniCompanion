@@ -5,10 +5,7 @@ const fs = require('fs');
 
 const chatAI = async (req, res) => {
   const { message } = req.body;
-  const token = req.headers.token;
-  //const decodedToken = jwt.verify(token, process.env.JWT_SECRET) || {id: '11'};
-  //const userID = decodedToken.id;
-  const userID = '11';
+  const userID = req.user_id;
   const sessionId = process.env.SESSION_ID + userID;
   // Create a new session
   const projectId = process.env.GOOGLE_PROJECT_ID
@@ -81,10 +78,7 @@ const chatAI = async (req, res) => {
 
 const history = async (req, res) => {
   console.log("History request received.")
-  const token = req.headers.token;
-  //const decodedToken = jwt.verify(token, process.env.JWT_SECRET) || {id: '11'};
-  //const userID = decodedToken.id;
-  const userID = '11';
+  const userID = req.user_id;
   const filePath = './chatDialogs/dialog' + userID + '.json';
   let jsonData = [];
   

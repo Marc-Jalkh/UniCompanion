@@ -30,13 +30,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoute);
+
+app.use(verifyToken);
+
 app.use('/chats', chatRoute);
 
 app.use('/users', usersRouter);
-
-app.use('/', indexRouter);
-
-app.use(verifyToken);
 
 app.use('/posts', postRoute);
 app.use('/home', homeRoute);
