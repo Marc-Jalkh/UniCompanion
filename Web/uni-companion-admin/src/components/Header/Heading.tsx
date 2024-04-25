@@ -13,15 +13,20 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
+import styles from "../../styles/page.module.css";
+import { useRouter } from "next/navigation";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
 export default function Heading() {
   const [state, setState] = React.useState(false);
-
+  const Router = useRouter();
+  const routes = React.useRef([
+    { name: "Dashboard", route: "/Dashboard", icon: <InboxIcon />},
+    { name: "Posts", route: "/Posts", icon: <InboxIcon /> },
+  ]);
   const list = () => (
     <Box
       sx={{
@@ -32,30 +37,18 @@ export default function Heading() {
       onKeyDown={() => setState(!state)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        {routes.current.map(item => (
+          <ListItem onClick={() => { Router.push(item.route)}} key={item.name} disablePadding>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {item.icon}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </Box>
   );
   const DrawerHeader = styled("div")(({ theme }) => ({
@@ -83,11 +76,8 @@ export default function Heading() {
       <Button
         style={{
           backgroundColor: "white",
-          zIndex: 1000,
-          borderRadius: '100%',
-          height: '60px',
-          margin: 20
         }}
+        className={styles.menuButton}
         onClick={() => setState(!state)}
       >
         <MenuIcon sx={{fontSize: '35px'}} />

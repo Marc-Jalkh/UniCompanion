@@ -27,5 +27,6 @@ export default function RootLayout({
 
   return <div>
     <Heading />
+    <br style={{height: 0}} />
     {isAuthenticated && children}</div>;
 }
