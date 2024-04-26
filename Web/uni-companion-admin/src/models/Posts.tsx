@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
-interface Post {
+export interface Post {
     id: number;
     title: string;
     content: string;
