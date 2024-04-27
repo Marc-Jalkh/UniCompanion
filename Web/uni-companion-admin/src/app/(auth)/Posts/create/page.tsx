@@ -4,18 +4,11 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import BaseLayout from "@components/components/Layout/BaseLayout";
 import { useTheme } from "@mui/material/styles";
-import { useRouter } from "next/navigation";
-import { PostImpl, Post } from "../../../../models/Posts";
-import Container from "@mui/material/Container";
 import FormControl from "@mui/material/FormControl";
-import { CustomButton } from "../../../../styles/customMUI/Button";
 import { CustomInput } from "../../../../styles/customMUI/Input";
 import InputLabel from "@mui/material/InputLabel";
-import Image from "next/image"; // Add this import
 
 const PostPage = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
   const [image, setImage] = React.useState("");
@@ -24,35 +17,18 @@ const PostPage = () => {
   return (
     <div>
       <BaseLayout
-        title={"Post ID: " + id}
+        title={"Create Post: "}
         actionButtons={
           <>
             <Button key="create-post" variant="outlined">
-              Save
-            </Button>
-            <Button key="create-post" variant="outlined">
-              Delete
+              Create
             </Button>
           </>
         }
         api="https://jsonplaceholder.typicode.com/posts"
-        mapper={(jsonData: any) => {
-          setTitle(jsonData[0].title);
-          setImage(jsonData[0].image);
-          setContent(jsonData[0].body);
-          const data: PostImpl = new PostImpl(
-            jsonData[0].id,
-            jsonData[0].title,
-            jsonData[0].body,
-            jsonData[0].date,
-            jsonData[0].image
-          );
-          return data;
-        }}
+        mapper={(jsonData: any) => {}}
         data={null}
-        body={(props) => {
-          console.log(props);
-          
+        body={(props) => {          
           return (
             <div>
               <FormControl variant="standard">

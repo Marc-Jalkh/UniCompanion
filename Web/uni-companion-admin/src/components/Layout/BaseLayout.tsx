@@ -8,7 +8,7 @@ class BaseLayoutProps<model> {
   actionButtons: React.JSX.Element;
   api: string;
   mapper!: (jsonData: any) => model;
-  body!: (props:model) => React.JSX.Element ;
+  body!: (props: model) => React.JSX.Element;
   data: any;
 
   constructor(
@@ -18,21 +18,19 @@ class BaseLayoutProps<model> {
     mapper: (jsonData: any) => model,
     data: any = null,
     //react elkement that takes props: type model
-    body: (props:model) => React.JSX.Element ,
+    body: (props: model) => React.JSX.Element
   ) {
     this.title = title;
     this.actionButtons = actionButtons;
     this.api = api;
     mapper = mapper;
-    body=body;
-    data=data;
+    body = body;
+    data = data;
   }
 }
 
 export default function BaseLayout(props: BaseLayoutProps<any>) {
-  var api = useRef(
-    useGetFromApi(props.api, props.mapper)
-  );
+  var api = useRef(useGetFromApi(props.api, props.mapper));
   if (props.data != null) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     api.current = usePostToApi(props.api, props.data, props.mapper);
@@ -45,15 +43,30 @@ export default function BaseLayout(props: BaseLayoutProps<any>) {
     load();
   }, [data, errorMessage, isLoading, load]);
 
-
+  if (isLoading) {
+    return (
+      <>
+        <h1
+          style={{
+            position: "absolute",
+            top: "45%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+            fontSize: "2rem",
+          }}
+        >
+          Loading...
+        </h1>
+      </>
+    );
+  }
   return (
-    <div >
+    <div>
       <section className={styles.BaseProp}>
         <div className={styles.baseHeading}>
           <h1>{props.title}</h1>
-          <section >
-            {props.actionButtons}
-          </section>
+          <section>{props.actionButtons}</section>
         </div>
         {props.body(data)}
       </section>
