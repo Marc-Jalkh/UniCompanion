@@ -7,30 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
@@ -49,9 +30,89 @@ function normalizePort(val) {
   return false;
 }
 
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
 /**
- * Event listener for HTTP server "error" event.
+ * Create HTTP server.
  */
+
+var server = http.createServer(app);
+
+/**
+ * Attach Socket.IO to the server
+ */
+var io = app.io;
+io.attach(server);
+
+/**
+ * Socket.IO chat handling
+ */
+io.on('connection', function(socket) {
+  console.log('A user connected');
+
+  socket.on('joinRoom', async ({ user1_id, user2_id }) => {
+    const room = `chat_${user1_id}_${user2_id}`;
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
+
+    // Fetch or create chatroom entry
+    let chatroom = await app.db('chatrooms')
+      .where({ user1_id: user1_id, user2_id: user2_id })
+      .orWhere({ user1_id: user2_id, user2_id: user1_id })
+      .first();
+
+    if (!chatroom) {
+      const filePath = `./chatData/chat_${user1_id}_${user2_id}.json`;
+      fs.writeFileSync(filePath, JSON.stringify([])); // Create an empty JSON file for the chatroom
+
+      // Insert new chatroom entry in DB
+      await app.db('chatrooms').insert({
+        user1_id: user1_id,
+        user2_id: user2_id,
+        path_to_json: filePath,
+        created_at: new Date()
+      });
+
+      chatroom = {
+        path_to_json: filePath
+      };
+    }
+
+    // Send previous messages
+    const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+    socket.emit('previousMessages', messages);
+  });
+
+  socket.on('chatMessage', async ({ user1_id, user2_id, message }) => {
+    const room = `chat_${user1_id}_${user2_id}`;
+    const chatroom = await app.db('chatrooms')
+      .where({ user1_id: user1_id, user2_id: user2_id })
+      .orWhere({ user1_id: user2_id, user2_id: user1_id })
+      .first();
+
+    if (chatroom) {
+      const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+      messages.push(message); // Append new message
+      fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
+      io.to(room).emit('message', message);
+    }
+  });
+
+  socket.on('disconnect', function() {
+    console.log('User disconnected');
+  });
+});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+// Remaining functions (normalizePort, onError, onListening) as they were
 
 function onError(error) {
   if (error.syscall !== 'listen') {
