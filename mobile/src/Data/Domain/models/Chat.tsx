@@ -44,12 +44,10 @@ class SingleChat {
 }
 
 class Message {
-  id: string;
   message: string;
   date: Date;
   isMine: boolean;
-  constructor(id: string, message: string, date: Date, isMine: boolean) {
-    this.id = id;
+  constructor(message: string, date: Date, isMine: boolean) {
     this.message = message;
     this.date = date;
     this.isMine = isMine;

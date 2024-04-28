@@ -15,7 +15,11 @@ export const AuthenticationProvider = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [token, setToken] = useState<string>('');
+  const [id, setId] = useState<string>('');
   const login = () => {
+    setId('1');
+    setToken('token');
     setIsAuthenticated(true);
   };
   const logout = () => {
@@ -26,7 +30,7 @@ export const AuthenticationProvider = ({
     <>
       {!isLoading ? (
         <AuthenticationContext.Provider
-          value={{isAuthenticated, login, logout}}>
+          value={{isAuthenticated, login, logout, token, id}}>
           {children}
         </AuthenticationContext.Provider>
       ) : (

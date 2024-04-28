@@ -45,10 +45,16 @@ function ChatsView(): JSX.Element {
       <SearchableList
         items={[
           {
-            image: 'https://via.placeholder.com/150',
-            title: 'Title',
+            image: 'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
+            title: 'AI Companion',
             subTitle: 'SubTitle',
-            onPress: () => navigation.navigate('SingleChat', {param1: 'Title'}),
+            onPress: () =>
+              navigation.navigate('SingleChat', {
+                param1: 'AI Companion',
+                param2: '0',
+                param3: 'AI Assistant',
+                param4: 'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
+              }),
             rightText: 'Right Text',
           },
           ...data.map(chat => {
@@ -57,7 +63,10 @@ function ChatsView(): JSX.Element {
               title: chat.name,
               subTitle: chat.lastMessage,
               onPress: () =>
-                navigation.navigate('SingleChat', {param1: chat.name}),
+                navigation.navigate('SingleChat', {
+                  param1: chat.name,
+                  param2: '2',
+                }),
 
               rightText: formatDate(chat.lastMessageDate),
             };
