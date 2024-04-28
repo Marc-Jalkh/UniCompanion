@@ -4,6 +4,7 @@ import {HeaderVariantView} from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
 import {SearchableList} from '../Common/component/SearchableList/SearchableList';
+import {useNavigation} from '@react-navigation/native';
 
 function PeopleView(): JSX.Element {
   const data: User[] = [
@@ -15,20 +16,22 @@ function PeopleView(): JSX.Element {
       faculty: '',
     },
     {
-      id: 1,
+      id: 2,
       name: 'Marcs',
       image: 'https://via.placeholder.com/150',
       usekId: '202200507',
-      faculty: '',
+      faculty: 'test',
     },
     {
-      id: 1,
+      id: 3,
       name: 'Marcx',
       image: 'https://via.placeholder.com/150',
       usekId: '202200507',
       faculty: '',
     },
   ];
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -42,7 +45,14 @@ function PeopleView(): JSX.Element {
             image: user.image,
             title: user.name,
             subTitle: user.usekId,
-            onPress: () => console.log('On Press'),
+            onPress: () => {
+              navigation.navigate('SingleChat', {
+                param1: user.name,
+                param2: user.id.toString(),
+                param3: user.faculty,
+                param4: user.image,
+              });
+            },
             rightText: 'Right Text',
           };
         })}
