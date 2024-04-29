@@ -1,6 +1,6 @@
 const db = require('../config/dbconfig.js');
 
-const getHome = async (req, res) => {
+const getforYou = async (req, res) => {
     const user_id  = req.user_id;
     try {
         const result = await db('users_courses as uc')
@@ -28,5 +28,5 @@ const getHome = async (req, res) => {
 }
 
 module.exports = {
-    getHome
+    getforYou
 }
