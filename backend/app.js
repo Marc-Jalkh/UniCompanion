@@ -7,7 +7,6 @@ var socketIo = require('socket.io');
   
 
 const verifyToken = require('./controllers/authorization.js')
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
 const chatRoute = require('./routes/chat.js');
