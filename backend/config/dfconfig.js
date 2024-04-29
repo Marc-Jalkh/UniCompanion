@@ -8,6 +8,6 @@ const credts ={
 };
    
 
-const sessionClient = new dialogflow.SessionsClient({credentials: credts});
+const sessionClient  =  null// new dialogflow.SessionsClient({credentials: credts});
 
 module.exports = sessionClient;
