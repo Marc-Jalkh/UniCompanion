@@ -10,24 +10,8 @@ import { useRouter } from "next/navigation";
 export default function SwipeableTemporaryDrawer() {
   const theme = useTheme();
   const Router = useRouter();
+  const [rows, setRows] = React.useState<GridRowsProp<PostImpl>>([]);
 
-  const rows: GridRowsProp<PostImpl> = [
-    {
-      id: 1,
-      image:
-        "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-      title: "World",
-      content: "Hello World",
-      date: "2021-10-10",
-    },
-    {
-      id: 2,
-      image: "Hello",
-      title: "World",
-      content: "Hello World",
-      date: "2021-10-10",
-    },
-  ];
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -53,8 +37,24 @@ export default function SwipeableTemporaryDrawer() {
             </Button>
           </>
         }
-        api="https://jsonplaceholder.typicode.com/posts"
-        mapper={(jsonData: any) => jsonData}
+        api="http://localhost:3000/posts/getAll"
+        mapper={(jsonData: any) =>{
+          console.log(jsonData);
+          var rowstemp: PostImpl[] = []
+           jsonData.map((post: any) => {
+            rowstemp.push(
+             new PostImpl(
+              post.post_id,
+              post.title,
+              post.content,
+              post.date,
+              post.picture
+            )
+          );
+          });
+          setRows(rowstemp);
+          return;
+          }}
         data={null}
         body={(props: any) => (
           <DataGrid

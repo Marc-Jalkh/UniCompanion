@@ -14,16 +14,28 @@ const LoginForm = () => {
   const [error, setError] = React.useState("");
   const Router = useRouter();
   const theme = useTheme();
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Here you can perform login logic, like sending the data to a backend API
     // For simplicity, let's just do basic validation
     if (!email || !password) {
       setError("Please fill in all fields");
     } else {
       // Perform login
-      cookies.set("sessionToken", "your_session_token_here", { expires: 1 });
-      Router.push("/Dashboard");
-      console.log("Logged in with:", { email, password });
+      const token = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: email, password }),
+      });
+
+      if (token.ok) {
+        const json = await token.json();
+        cookies.set("sessionToken", json.token, { expires: 1 });
+        Router.push("/Dashboard");
+        console.log("Logged in with:", { email, password });
+      }
+
     }
   };
 
@@ -43,7 +55,7 @@ const LoginForm = () => {
     >
       <h1>Login</h1>
       <FormControl variant="standard">
-        <InputLabel style={{color: theme.palette.primary.main}} shrink>Email:</InputLabel>
+        <InputLabel style={{ color: theme.palette.primary.main }} shrink>Email:</InputLabel>
         <CustomInput
           placeholder="Email"
           type="email"
@@ -54,7 +66,7 @@ const LoginForm = () => {
         />
       </FormControl>
       <FormControl variant="standard">
-        <InputLabel style={{color: theme.palette.primary.main}} shrink>
+        <InputLabel style={{ color: theme.palette.primary.main }} shrink>
           Password:
         </InputLabel>
         <CustomInput

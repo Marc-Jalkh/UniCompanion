@@ -2,6 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import { useCallback, useRef, useState } from "react";
 import styles from "../../styles/Css/BaseLayout.module.css";
+import cookies from "js-cookie";
 
 class BaseLayoutProps<model> {
   title: string;
@@ -31,17 +32,15 @@ class BaseLayoutProps<model> {
 
 export default function BaseLayout(props: BaseLayoutProps<any>) {
   var api = useRef(useGetFromApi(props.api, props.mapper));
-  if (props.data != null) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    api.current = usePostToApi(props.api, props.data, props.mapper);
-  }
 
+  const [count, setCount] = useState(0);
   const { isLoading, errorMessage, data, load } = useCustomApi(
     () => api.current
   );
   React.useEffect(() => {
-    load();
-  }, [data, errorMessage, isLoading, load]);
+    if (count === 0) load();
+    setCount(count + 1);
+  }, [errorMessage, isLoading, load]);
 
   if (isLoading) {
     return (
@@ -126,7 +125,13 @@ async function useGetFromApi<T>(
   mapper: (jsonData: any) => T
 ): Promise<T | null> {
   try {
-    const response = await fetch(`${path}`);
+    const sessionToken = cookies.get("sessionToken"); // Get sessionToken from cookie
+    const response = await fetch(`${path}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "token": `${sessionToken}`
+      }    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -152,6 +157,7 @@ async function usePostToApi<T>(
       body: JSON.stringify(data),
     });
     if (!response.ok) {
+      console.log(response);
       throw new Error("Network response was not ok");
     }
     const jsonData = await response.json();
