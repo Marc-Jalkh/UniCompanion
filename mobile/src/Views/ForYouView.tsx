@@ -23,7 +23,7 @@ function ForYouView(): React.JSX.Element {
     'Computer Science',
     'Bachelor degree',
     '0.75',
-    'Quote From Api',
+    'Stay Hungry, Stay Foolish - Steve Jobs',
   );
   return (
     <View
@@ -61,7 +61,7 @@ function ForYouView(): React.JSX.Element {
                   }}>
                   <IconRectangularButton
                     onPress={() => navigation.navigate('Wallet')}
-                    icon="plus"
+                    icon={require('../Common/utils/Assets/icons/wallet.png')}
                     title="Wallet"
                   />
                 </View>
@@ -72,7 +72,7 @@ function ForYouView(): React.JSX.Element {
                   }}>
                   <IconRectangularButton
                     onPress={() => navigation.navigate('Grades')}
-                    icon="plus"
+                    icon={require('../Common/utils/Assets/icons/grades.png')}
                     title="Grade"
                   />
                 </View>

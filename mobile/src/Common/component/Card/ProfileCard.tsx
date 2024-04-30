@@ -96,6 +96,7 @@ function ProfileCard(_props: ProfileCardProps): React.JSX.Element {
           <Image
             style={{height: height, ...cardStyle.imgCol}}
             source={{uri: _props.avatar}}
+            resizeMode="cover"
           />
         </View>
       </Card.Content>

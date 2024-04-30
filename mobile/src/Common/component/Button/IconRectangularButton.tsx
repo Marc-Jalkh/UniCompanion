@@ -1,13 +1,13 @@
 import React from 'react';
 import {Card, IconButton, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../../utils/Assets/Styles/ScreensStyles';
-
+import {Image, ImageSourcePropType} from 'react-native';
 class IconButtonProps {
-  icon: string;
+  icon: ImageSourcePropType;
   title: string;
   onPress: () => void;
 
-  constructor(icon: string, title: string, onPress: () => void) {
+  constructor(icon: ImageSourcePropType, title: string, onPress: () => void) {
     this.icon = icon;
     this.title = title;
     this.onPress = onPress;
@@ -26,7 +26,17 @@ function IconRectangularButton(props: IconButtonProps): JSX.Element {
       onPress={onPress}>
       <Card.Content>
         <IconButton
-          icon={icon}
+          // eslint-disable-next-line react/no-unstable-nested-components
+          icon={() => (
+            <Image
+              source={icon}
+              width={40}
+              height={40}
+              tintColor={theme.colors.primary}
+              resizeMode="contain"
+              style={{width: 40, height: 40}}
+            />
+          )}
           iconColor={theme.colors.primary}
           containerColor={theme.colors.surface}
           size={40}

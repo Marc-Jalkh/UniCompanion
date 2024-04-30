@@ -12,9 +12,10 @@ function ProfileView(): JSX.Element {
   const data: User = {
     id: 1,
     name: 'Marc',
-    image: 'https://via.placeholder.com/150',
+    image:
+      'https://media.licdn.com/dms/image/C4E03AQFoiDXIjMOCuQ/profile-displayphoto-shrink_800_800/0/1653386732747?e=2147483647&v=beta&t=D2Atmb-eycuFWuxT8BslZ1nBy9P3BuARBU62PdvBrrE',
     usekId: '202200507',
-    faculty: '',
+    faculty: 'Arts & Sciences',
   };
 
   const [qrCode, setQrCode] = React.useState('error');

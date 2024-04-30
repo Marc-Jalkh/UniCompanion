@@ -20,33 +20,25 @@ import PageLoader from '../Common/component/Loader/PageLoader';
 import {HomeData} from '../Data/Domain/models/HomeData';
 
 function HomeView(): React.JSX.Element {
-  const api = useGetFromApi(
-    'https://jsonplaceholder.typicode.com/posts?userId=1',
-    (jsonData: any) => {
-      var posts: Post[] = [];
-      jsonData.map((post: any) => {
-        posts.push({
-          title: post.title,
-          content: post.body,
-          image: 'https://picsum.photos/20' + post.id,
-          date: new Date().toISOString(),
-        });
-        return {
-          id: post.id,
-          title: post.title,
-          body: post.body,
-        };
-      });
-      return posts;
-    },
-  );
+  const api = useGetFromApi('posts/getAll', (jsonData: any) => {
+    var posts: Post[] = jsonData.map((post: any) => {
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        image: post.picture,
+        date: post.date,
+      };
+    });
+    return posts;
+  });
   const [dates, setDates] = React.useState(
     new HomeData(
       'Good Morning 👋',
       'Marc Jalkh',
       [],
-      'Fall 2021',
-      '3.99',
+      'Spring 2024',
+      '4.0',
       '100/100',
     ),
   );
@@ -104,7 +96,7 @@ function HomeView(): React.JSX.Element {
             onPress={() =>
               Linking.openURL('https://myusek.usek.edu.lb/banner-sis')
             }
-            icon="add-circle-outline"
+            icon={require('../Common/utils/Assets/img/usek.png')}
             title="My Usek"
           />
           <RoundButton
@@ -113,17 +105,17 @@ function HomeView(): React.JSX.Element {
                 'https://banner-self.usek.edu.lb/StudentSelfService',
               )
             }
-            icon="add-circle-outline"
+            icon={require('../Common/utils/Assets/icons/banner.png')}
             title="Banner"
           />
           <RoundButton
             onPress={() => Linking.openURL('https://elearning.usek.edu.lb/')}
-            icon="add-circle-outline"
+            icon={require('../Common/utils/Assets/icons/moodle.png')}
             title="E-Learning"
           />
           <RoundButton
             onPress={() => navigation.navigate('Wallet')}
-            icon="wallet-outline"
+            icon={require('../Common/utils/Assets/icons/wallet.png')}
             title="Wallet"
           />
         </View>

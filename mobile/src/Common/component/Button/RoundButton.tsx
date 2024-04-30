@@ -1,14 +1,13 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, ImageSourcePropType, StyleSheet, View} from 'react-native';
 import {IconButton, Text, useTheme} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 class RoundButtonProps {
   onPress: () => void;
-  icon: string;
+  icon: ImageSourcePropType;
   title: string;
 
-  constructor(onPress: () => void, icon: string, title: string) {
+  constructor(onPress: () => void, icon: ImageSourcePropType, title: string) {
     this.onPress = onPress;
     this.icon = icon;
     this.title = title;
@@ -35,7 +34,14 @@ function RoundButton(props: RoundButtonProps): React.JSX.Element {
       <IconButton
         // eslint-disable-next-line react/no-unstable-nested-components
         icon={() => (
-          <Icon name={props.icon} size={40} color={theme.colors.primary} />
+          <Image
+            source={props.icon}
+            width={40}
+            height={40}
+            tintColor={theme.colors.primary}
+            resizeMode="contain"
+            style={{width: 40, height: 40}}
+          />
         )}
         mode="contained"
         iconColor={theme.colors.primary}

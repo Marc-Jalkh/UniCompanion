@@ -16,6 +16,8 @@ const cardStyle = StyleSheet.create({
   centerImage: {
     alignContent: 'center',
     justifyContent: 'center',
+    width: 60,
+    height: 60,
   },
   text: {
     marginLeft: 10,

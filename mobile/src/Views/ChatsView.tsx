@@ -11,27 +11,27 @@ function ChatsView(): JSX.Element {
   const data: Chat[] = [
     {
       id: '1',
-      name: 'Marc',
+      name: 'Gilbert',
       lastMessage: 'Last Message',
       lastMessageDate: '2024-04-01T05:01:00Z',
       unreadMessages: 1,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://media.licdn.com/dms/image/D4E03AQHdNkl0p9HCbA/profile-displayphoto-shrink_800_800/0/1683628386031?e=2147483647&v=beta&t=J3mxzPE6iWuyhYiuHeLF12p0d9MImD_9asd6HAzLqFo',
     },
     {
       id: '2',
-      name: 'Marcs',
+      name: 'Registrar',
       lastMessage: 'Last Message',
       lastMessageDate: '2024-03-31T00:00:00Z',
       unreadMessages: 1,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://www.usek.edu.lb/ContentFiles/1Logo.jpg',
     },
     {
       id: '3',
-      name: 'Marcx',
+      name: 'Dr Antoine Aoun',
       lastMessage: 'Last Message',
       lastMessageDate: '2024-01-01T00:00:00Z',
       unreadMessages: 1,
-      image: 'https://via.placeholder.com/150',
+      image: 'https://s3.amazonaws.com/media.mixrank.com/profilepic/ef374903c53039b18de6f9ca47c01377',
     },
   ];
   const navigation = useNavigation();
@@ -45,7 +45,8 @@ function ChatsView(): JSX.Element {
       <SearchableList
         items={[
           {
-            image: 'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
+            image:
+              'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
             title: 'AI Companion',
             subTitle: 'SubTitle',
             onPress: () =>
@@ -53,7 +54,8 @@ function ChatsView(): JSX.Element {
                 param1: 'AI Companion',
                 param2: '0',
                 param3: 'AI Assistant',
-                param4: 'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
+                param4:
+                  'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
               }),
             rightText: 'Right Text',
           },
