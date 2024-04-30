@@ -46,7 +46,7 @@ const TabView = (): React.JSX.Element => {
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color}) => (
             <Image
-              source={require('../Common/utils/Assets/icons/Fire.png')}
+              source={require('../Common/utils/Assets/icons/fire.png')}
               width={40}
               height={40}
               tintColor={color}
@@ -91,7 +91,7 @@ const TabView = (): React.JSX.Element => {
           // eslint-disable-next-line react/no-unstable-nested-components
           tabBarIcon: ({color}) => (
             <Image
-              source={require('../Common/utils/Assets/icons/profile.png')}
+              source={require('../Common/utils/Assets/icons/Profile.png')}
               width={40}
               height={40}
               tintColor={color}

@@ -15,7 +15,8 @@ function ChatsView(): JSX.Element {
       lastMessage: 'Last Message',
       lastMessageDate: '2024-04-01T05:01:00Z',
       unreadMessages: 1,
-      image: 'https://media.licdn.com/dms/image/D4E03AQHdNkl0p9HCbA/profile-displayphoto-shrink_800_800/0/1683628386031?e=2147483647&v=beta&t=J3mxzPE6iWuyhYiuHeLF12p0d9MImD_9asd6HAzLqFo',
+      image:
+        'https://media.licdn.com/dms/image/D4E03AQHdNkl0p9HCbA/profile-displayphoto-shrink_800_800/0/1683628386031?e=2147483647&v=beta&t=J3mxzPE6iWuyhYiuHeLF12p0d9MImD_9asd6HAzLqFo',
     },
     {
       id: '2',
@@ -31,7 +32,8 @@ function ChatsView(): JSX.Element {
       lastMessage: 'Last Message',
       lastMessageDate: '2024-01-01T00:00:00Z',
       unreadMessages: 1,
-      image: 'https://s3.amazonaws.com/media.mixrank.com/profilepic/ef374903c53039b18de6f9ca47c01377',
+      image:
+        'https://s3.amazonaws.com/media.mixrank.com/profilepic/ef374903c53039b18de6f9ca47c01377',
     },
   ];
   const navigation = useNavigation();
@@ -67,7 +69,9 @@ function ChatsView(): JSX.Element {
               onPress: () =>
                 navigation.navigate('SingleChat', {
                   param1: chat.name,
-                  param2: '2',
+                  param2: '1',
+                  param3: 'Student',
+                  param4: chat.image,
                 }),
 
               rightText: formatDate(chat.lastMessageDate),

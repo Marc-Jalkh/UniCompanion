@@ -41,6 +41,7 @@ export const AuthenticationProvider = ({
         if (response.status === 200) {
           response.json().then(data => {
             setId(id);
+            AsyncStorage.setItem('id', id);
             AsyncStorage.setItem('token', data.token);
             setToken(data.token);
             setIsAuthenticated(true);
@@ -74,6 +75,7 @@ export const AuthenticationProvider = ({
   };
   const logout = () => {
     AsyncStorage.removeItem('token');
+    AsyncStorage.removeItem('id');
     setIsAuthenticated(false);
   };
 
@@ -82,6 +84,11 @@ export const AuthenticationProvider = ({
     AsyncStorage.getItem('token').then(token => {
       if (token) {
         setToken(token);
+        AsyncStorage.getItem('id').then(id => {
+          if (id) {
+            setId(id);
+          }
+        });
         setIsAuthenticated(true);
       }
     });

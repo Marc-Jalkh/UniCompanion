@@ -12,7 +12,7 @@ export function useCustomApi<Api extends (...args: any[]) => Promise<any>>(
 
   const load = useCallback(
     (...args: Parameters<Api>) => {
-      if (isLoading || data != undefined || !api) {
+      if (isLoading || data != undefined || !api || errorMessage != undefined) {
         return;
       }
       setIsLoading(true);
