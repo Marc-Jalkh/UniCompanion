@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Image, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
@@ -11,8 +11,13 @@ function LoginView(): React.JSX.Element {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const {login} = useAuth();
-
+  const {login, errorMsg, setError} = useAuth();
+  useEffect(() => {
+    if (errorMsg !== '') {
+      Alert.alert(errorMsg);
+      setError('');
+    }
+  }, [errorMsg, setError]);
   return (
     <View
       style={{
@@ -52,12 +57,12 @@ function LoginView(): React.JSX.Element {
           textColor={themeMode.colors.secondary}
           placeholderTextColor={themeMode.colors.onSecondary}
           outlineColor={themeMode.colors.secondary}
-          right={
-            <TextInput.Icon
-              icon="eye"
-              onPress={() => setPasswordVisibility(!passwordVisibility)}
-            />
-          }
+          // right={
+          //   // <TextInput.Icon
+          //   //   icon="eye"
+          //   //   onPress={() => setPasswordVisibility(!passwordVisibility)}
+          //   // />
+          // }
         />
         <Button
           mode="contained"
@@ -68,7 +73,7 @@ function LoginView(): React.JSX.Element {
           contentStyle={ScreensStyles.smallPaddingVertical}
           buttonColor={themeMode.colors.secondary}
           textColor={themeMode.colors.background}
-          onPress={() => login()}>
+          onPress={() => login(id, password)}>
           Login
         </Button>
         <View style={ScreensStyles.horizontalContainer}>
@@ -94,3 +99,7 @@ function LoginView(): React.JSX.Element {
 }
 
 export default LoginView;
+function alert(errorMsg: string) {
+  throw new Error('Function not implemented.');
+}
+

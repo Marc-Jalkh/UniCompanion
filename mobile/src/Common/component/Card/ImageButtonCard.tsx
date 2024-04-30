@@ -37,7 +37,7 @@ function ImageButtonCard(props: ImageCardProps): JSX.Element {
       onPress={_onPress}>
       <Card.Cover
         style={cardStyle.someheight}
-        source={{uri: 'https://picsum.photos/700'}}
+        source={require('../../utils/Assets/img/usekMap.png')}
       />
       <Button
         mode="contained"

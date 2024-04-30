@@ -6,6 +6,7 @@ import ChatsView from '../Views/ChatsView';
 import CalendarView from '../Views/CalendarView';
 import ProfileView from '../Views/ProfileView';
 import {useTheme} from 'react-native-paper';
+import {Image} from 'react-native';
 
 const TabView = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
@@ -23,11 +24,81 @@ const TabView = (): React.JSX.Element => {
         tabBarInactiveTintColor: theme.colors.onPrimary,
         tabBarShowLabel: false,
       }}>
-      <Tab.Screen name="Home" component={HomeView} />
-      <Tab.Screen name="For You" component={ForYouView} />
-      <Tab.Screen name="Chats" component={ChatsView} />
-      <Tab.Screen name="Calendar" component={CalendarView} />
-      <Tab.Screen name="Profile" component={ProfileView} />
+      <Tab.Screen
+        name="Home"
+        component={HomeView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/house.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="For You"
+        component={ForYouView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/Fire.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Chats"
+        component={ChatsView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/chatBubble.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/cal.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/profile.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

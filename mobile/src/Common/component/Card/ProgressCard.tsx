@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {Avatar, Card, ProgressBar, Text, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../../utils/Assets/Styles/ScreensStyles';
 
@@ -78,11 +78,11 @@ function ProgressCard(_props: ProgressCardProps): React.JSX.Element {
         subtitle={_props.major}
         // eslint-disable-next-line react/no-unstable-nested-components
         right={_ => (
-          <Avatar.Icon
-            size={60}
-            icon="account"
-            color={theme.colors.primary}
-            style={{backgroundColor: theme.colors.surface}}
+          <Image
+            source={require('../../utils/Assets/icons/graduate.png')}
+            width={60}
+            height={60}
+            tintColor={theme.colors.primary}
           />
         )}
       />

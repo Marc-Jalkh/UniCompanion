@@ -1,7 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {IconButton, Text, TextInput, useTheme} from 'react-native-paper';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Text, TextInput, useTheme} from 'react-native-paper';
 import scoreItems from './SearchAlgorithm';
 import ListCard from '../Card/ListCard';
 import {ScreensStyles} from '../../utils/Assets/Styles/ScreensStyles';
@@ -85,20 +91,25 @@ function SearchableList(props: SearchableListProps): React.JSX.Element {
             textColor={theme.colors.secondary}
             left={
               query.length < 1 ? (
-                <TextInput.Icon
-                  icon="icon-name" // Replace "icon-name" with the desired icon name
-                  color={theme.colors.onSecondary}
+                <Image
+                  source={require('../../utils/Assets/icons/search.png')}
+                  width={40}
+                  height={40}
+                  tintColor={theme.colors.primary}
                 />
               ) : null
             }
           />
           {props.rightIcon ? (
-            <IconButton
-              icon="icon-name"
-              iconColor={theme.colors.primary}
-              size={20}
-              onPress={() => navigation.navigate('People')}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('People')}>
+              <Image
+                source={require('../../utils/Assets/icons/addChat.png')}
+                width={20}
+                height={20}
+                tintColor={theme.colors.primary}
+                style={{margin: 10}}
+              />
+            </TouchableOpacity>
           ) : null}
         </View>
         <Text

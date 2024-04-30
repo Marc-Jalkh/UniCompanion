@@ -33,7 +33,10 @@ type Routes = {
 
 const StackNavigator = (): React.JSX.Element => {
   const Stack = createNativeStackNavigator<Routes>();
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, checkToken} = useAuth();
+  React.useEffect(() => {
+    checkToken();
+  }, [checkToken]);
   return (
     <Stack.Navigator
       initialRouteName="TabView"

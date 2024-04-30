@@ -19,7 +19,7 @@ const knexConfig = {
   connection: {
     host: 'localhost', 
     port: 5432,
-    user: 'postgres',
+    user: 'marcjalkh',
     password: process.env.DB_LOCAL_PASSWORD,
     database: 'postgres'
   }
