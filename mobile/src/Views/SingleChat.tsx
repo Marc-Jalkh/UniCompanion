@@ -6,8 +6,10 @@ import {
   Platform,
   TextInput,
   StyleSheet,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
-import {IconButton, Text, useTheme} from 'react-native-paper';
+import {Text, useTheme} from 'react-native-paper';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {ChatHeader} from '../Common/component/Header/ChatHeader';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -232,12 +234,13 @@ const SingleChat: React.FC = () => {
               placeholderTextColor={theme.colors.onSecondary}
               multiline
             />
-            <IconButton
-              icon="camera"
-              iconColor={theme.colors.primary}
-              size={30}
-              onPress={() => saveMessage()}
-            />
+            <TouchableOpacity onPress={() => saveMessage()}>
+              <Image
+                source={require('../Common/utils/Assets/icons/send.png')}
+                style={{width: 20, height: 20, marginLeft: 10, marginEnd: 5}}
+                tintColor={theme.colors.primary}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
