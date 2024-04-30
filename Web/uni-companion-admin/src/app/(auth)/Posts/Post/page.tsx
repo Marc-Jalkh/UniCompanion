@@ -20,7 +20,44 @@ const PostPage = () => {
   const [content, setContent] = React.useState("");
   const [image, setImage] = React.useState("");
   const theme = useTheme();
-  
+  const [counter, setcount] = React.useState(0)
+
+  function setData(
+    titles: string,
+    body: string,
+    images: string,
+  ){
+    if(counter > 0) return;
+    setTitle(titles);
+    setContent(body);
+    setImage(images)
+    setcount(1)
+  }
+
+  var deletePost = () =>{
+    try {
+      fetch("http://localhost:3000/posts/delete/" + id, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "token": "fdfasfds"
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          console.log(response);
+          //navigate back
+        }
+      });
+
+    }
+    catch{
+
+    }
+  }
+
+
+  //function post update 
+  //same as create 
   return (
     <div>
       <BaseLayout
@@ -30,23 +67,25 @@ const PostPage = () => {
             <Button key="create-post" variant="outlined">
               Save
             </Button>
-            <Button key="create-post" variant="outlined">
+            <Button key="create-post" variant="outlined" onClick={deletePost}>
               Delete
             </Button>
           </>
         }
-        api="https://jsonplaceholder.typicode.com/posts"
+        api={"http://localhost:3000/posts/get/"+ id}
         mapper={(jsonData: any) => {
-          setTitle(jsonData[0].title);
-          setImage(jsonData[0].image);
-          setContent(jsonData[0].body);
           const data: PostImpl = new PostImpl(
             jsonData[0].id,
             jsonData[0].title,
-            jsonData[0].body,
+            jsonData[0].content,
             jsonData[0].date,
-            jsonData[0].image
+            jsonData[0].picture
           );
+          setData(
+            jsonData[0].title,
+            jsonData[0].content,
+            jsonData[0].picture
+          )
           return data;
         }}
         data={null}

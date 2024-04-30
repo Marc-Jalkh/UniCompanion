@@ -37,10 +37,7 @@ export default function BaseLayout(props: BaseLayoutProps<any>) {
   const { isLoading, errorMessage, data, load } = useCustomApi(
     () => api.current
   );
-  React.useEffect(() => {
-    if (count === 0) load();
-    setCount(count + 1);
-  }, [errorMessage, isLoading, load]);
+
 
   if (isLoading) {
     return (
@@ -100,12 +97,13 @@ export function useCustomApi<Api extends (...args: any[]) => Promise<any>>(
       api(...args)
         .then((apiData) => {
           setData(apiData);
+          setIsLoading(false)
         })
         .catch((error: any | Error) => {
           console.log(error);
           setErrorMessage("Something went wrong!");
+          setIsLoading(false)
         })
-        .finally(() => setIsLoading(false));
     },
     [api, data, errorMessage, isLoading]
   );
@@ -153,6 +151,7 @@ async function usePostToApi<T>(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "token": "fdfasfds"
       },
       body: JSON.stringify(data),
     });

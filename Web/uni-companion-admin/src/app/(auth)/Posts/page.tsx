@@ -6,12 +6,13 @@ import BaseLayout from "@components/components/Layout/BaseLayout";
 import { PostImpl } from "../../../models/Posts";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
+import { count } from "console";
 
 export default function SwipeableTemporaryDrawer() {
   const theme = useTheme();
   const Router = useRouter();
   const [rows, setRows] = React.useState<GridRowsProp<PostImpl>>([]);
-
+  const [counter, setcount] = React.useState(0)
   const columns: GridColDef[] = [
     {
       field: "image",
@@ -26,6 +27,11 @@ export default function SwipeableTemporaryDrawer() {
     { field: "content", headerName: "Content", width: 400 },
     { field: "date", headerName: "Date", width: 400 },
   ];
+  function setNewRows(data:GridRowsProp<PostImpl>){
+    if(counter > 0) return;
+    setRows(data)
+    setcount(1)
+  }
   return (
     <div>
       <BaseLayout
@@ -38,25 +44,25 @@ export default function SwipeableTemporaryDrawer() {
           </>
         }
         api="http://localhost:3000/posts/getAll"
-        mapper={(jsonData: any) =>{
+        mapper={(jsonData: any) => {
           console.log(jsonData);
-          var rowstemp: PostImpl[] = []
-           jsonData.map((post: any) => {
+          var rowstemp: PostImpl[] = [];
+          jsonData.map((post: any) => {
             rowstemp.push(
-             new PostImpl(
-              post.post_id,
-              post.title,
-              post.content,
-              post.date,
-              post.picture
-            )
-          );
+              new PostImpl(
+                post.post_id,
+                post.title,
+                post.content,
+                post.date,
+                post.picture
+              )
+            );
           });
-          setRows(rowstemp);
-          return;
-          }}
+          setNewRows(rowstemp)
+          return rowstemp;
+        }}
         data={null}
-        body={(props: any) => (
+        body={(props: GridRowsProp<PostImpl>) => (
           <DataGrid
             rows={rows}
             columns={columns}

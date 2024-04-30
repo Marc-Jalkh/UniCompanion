@@ -11,6 +11,16 @@ export default function SwipeableTemporaryDrawer() {
 
   return (
     <div>
+      <img 
+      style={{
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        height: '100%',
+        filter: 'brightness(0.8)',
+      }}
+      src="https://keystoneacademic-res.cloudinary.com/image/upload/f_auto/q_auto/g_auto/c_fill/w_1280/element/16/167723_1KM_1762.jpg" />
+
       <section
         style={{
           position: "absolute",
@@ -26,13 +36,15 @@ export default function SwipeableTemporaryDrawer() {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "white",
-            padding: "40px",
+            padding: "50px",
             borderRadius: "10px",
           }}
         >
           <h3>Welcome to the UniCompanion dashboard</h3>
           <h1>{time.toDateString()}</h1>
-          <h1 style={{fontSize: 70}}>{time.getHours()}:{time.getMinutes()}</h1>
+          <h1 style={{ fontSize: 70 }}>
+            {time.getHours()}:{time.getMinutes()}
+          </h1>
         </div>
       </section>
     </div>

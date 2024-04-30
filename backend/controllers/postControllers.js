@@ -31,6 +31,21 @@ const editPost = async (req, res) => {
     }
 };
 
+const getPost = async (req, res) => {
+    const { post_id } = req.params;
+    const posts = await db('posts').where({post_id});
+
+    try {
+        if (posts) {
+            res.status(200).send( posts );
+        } else {
+            res.status(404).send({ message: 'Post not found' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating post', error });
+    }
+};
+
 const deletePost = async (req, res) => {
     const { post_id } = req.params;
     
@@ -67,5 +82,6 @@ module.exports = {
     getPosts,
     editPost,
     deletePost,
-    createPost
+    createPost,
+    getPost
 }
