@@ -1,5 +1,5 @@
 require('dotenv').config();
-const dialogflow = require('@google-cloud/dialogflow');
+const dialogflow = require('@google-cloud/dialogflow').v2beta1;
 
 
 const credts ={

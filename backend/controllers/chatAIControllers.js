@@ -3,7 +3,6 @@ const sessionClient = require('../config/dfconfig.js');
 const fs = require('fs');
 
 const chatAI = async (req, res) => {
-  console.log(process.env.KNOWLEDGE_BASE_NAMES.split(','))
   const { message } = req.body;
   const userID = req.user_id;
   const sessionId = process.env.SESSION_ID + userID;
@@ -26,7 +25,7 @@ const chatAI = async (req, res) => {
         sentimentAnalysisRequestConfig: {
           analyzeQueryTextSentiment: true
         },
-        knowledgeBaseNames: ['projects/unicompanion-bnjr/knowledgeBases/NTIxODQzNDE5MjkwNzQzNjAzMw']
+        knowledgeBaseNames: process.env.KNOWLEDGE_BASE_NAMES
       },
     }
   };
@@ -63,7 +62,7 @@ const chatAI = async (req, res) => {
     console.error("Error writing to JSON file:", error);
   }
   
-  res.json(result);
+  res.json(result.fulfillmentText);
 }
 
 
