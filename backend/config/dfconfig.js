@@ -1,5 +1,6 @@
 require('dotenv').config();
-const dialogflow = require('dialogflow').v2beta1;
+const dialogflow = require('@google-cloud/dialogflow').v2beta1;
+
 
 const credts ={
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
