@@ -6,6 +6,7 @@ import ChatsView from '../Views/ChatsView';
 import CalendarView from '../Views/CalendarView';
 import ProfileView from '../Views/ProfileView';
 import {useTheme} from 'react-native-paper';
+import {Image} from 'react-native';
 
 const TabView = (): React.JSX.Element => {
   const Tab = createBottomTabNavigator();
@@ -23,45 +24,83 @@ const TabView = (): React.JSX.Element => {
         tabBarInactiveTintColor: theme.colors.onPrimary,
         tabBarShowLabel: false,
       }}>
-      <Tab.Screen name="Home" component={HomeView} />
-      <Tab.Screen name="For You" component={ForYouView} />
-      <Tab.Screen name="Chats" component={ChatsView} />
-      <Tab.Screen name="Calendar" component={CalendarView} />
-      <Tab.Screen name="Profile" component={ProfileView} />
+      <Tab.Screen
+        name="Home"
+        component={HomeView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/house.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="For You"
+        component={ForYouView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/fire.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Chats"
+        component={ChatsView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/chatBubble.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/cal.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileView}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: ({color}) => (
+            <Image
+              source={require('../Common/utils/Assets/icons/Profile.png')}
+              width={40}
+              height={40}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
-
-// const RedBackgroundScreen = (link: string): React.JSX.Element => {
-//   const {data, errorMessage, isLoading, load} = useCustomApi(() =>
-//     // eslint-disable-next-line react-hooks/rules-of-hooks
-//     useGetFromApi(link, beerJsonMapper),
-//   );
-
-//   React.useEffect(() => {
-//     console.log('loading ' + link);
-//     load();
-//   }, [link, load]);
-
-//   // const navigation = useNavigation();
-//   return (
-//     // eslint-disable-next-line react-native/no-inline-styles
-//     <View style={{flex: 1}}>
-//       <Text>hi</Text>
-//       {
-//         // eslint-disable-next-line no-nested-ternary
-//         isLoading ? (
-//           <PageLoader />
-//         ) : errorMessage ? (
-//           <Text>{errorMessage}</Text>
-//         ) : null
-//       }
-//       {data?.map(beer => (
-//         <Text key={beer.id}>{beer.name}</Text>
-//       ))}
-//       <Button title="Go to dsad" onPress={() => {}} />
-//     </View>
-//   );
-// };
 
 export default TabView;

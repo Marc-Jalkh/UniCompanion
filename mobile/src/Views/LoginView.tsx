@@ -1,8 +1,8 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, View} from 'react-native';
 import {Button, Text, TextInput, useTheme} from 'react-native-paper';
-import {TabScreensStyles} from '../Common/utils/Assets/Styles/TabScreensStyles';
+import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
 
 function LoginView(): React.JSX.Element {
@@ -11,26 +11,32 @@ function LoginView(): React.JSX.Element {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const {login} = useAuth();
-
+  const {login, errorMsg, setError} = useAuth();
+  useEffect(() => {
+    if (errorMsg !== '') {
+      Alert.alert(errorMsg);
+      setError('');
+    }
+  }, [errorMsg, setError]);
   return (
     <View
       style={{
-        ...TabScreensStyles.container,
+        ...ScreensStyles.container,
         backgroundColor: themeMode.colors.background,
       }}>
-      <Text
-        variant="displaySmall"
-        style={{
-          ...TabScreensStyles.alignCenter,
-          ...TabScreensStyles.marginTop,
-          color: themeMode.colors.secondary,
-        }}>
-        UniCompaniøn
-      </Text>
-      <View style={TabScreensStyles.onBoardingContainer}>
+      <View style={[ScreensStyles.container, ScreensStyles.alignCenter]}>
+        <Image
+          style={[
+            ScreensStyles.OnBoardingImage,
+            {tintColor: themeMode.colors.secondary},
+          ]}
+          source={require('../Common/utils/Assets/img/usek.png')}
+        />
+      </View>
+      <View
+        style={[ScreensStyles.onBoardingContainer, ScreensStyles.marginTop]}>
         <TextInput
-          style={TabScreensStyles.fullWidth}
+          style={ScreensStyles.fullWidth}
           mode="outlined"
           label="Id: "
           placeholder="Enter your id"
@@ -41,7 +47,7 @@ function LoginView(): React.JSX.Element {
           outlineColor={themeMode.colors.secondary}
         />
         <TextInput
-          style={TabScreensStyles.fullWidth}
+          style={ScreensStyles.fullWidth}
           mode="outlined"
           label="Password"
           placeholder="Type something"
@@ -51,39 +57,39 @@ function LoginView(): React.JSX.Element {
           textColor={themeMode.colors.secondary}
           placeholderTextColor={themeMode.colors.onSecondary}
           outlineColor={themeMode.colors.secondary}
-          right={
-            <TextInput.Icon
-              icon="eye"
-              onPress={() => setPasswordVisibility(!passwordVisibility)}
-            />
-          }
+          // right={
+          //   // <TextInput.Icon
+          //   //   icon="eye"
+          //   //   onPress={() => setPasswordVisibility(!passwordVisibility)}
+          //   // />
+          // }
         />
         <Button
           mode="contained"
           style={{
-            ...TabScreensStyles.customButton,
-            ...TabScreensStyles.marginTop,
+            ...ScreensStyles.customButton,
+            ...ScreensStyles.marginTop,
           }}
-          contentStyle={TabScreensStyles.smallPaddingVertical}
+          contentStyle={ScreensStyles.smallPaddingVertical}
           buttonColor={themeMode.colors.secondary}
           textColor={themeMode.colors.background}
-          onPress={() => login()}>
+          onPress={() => login(id, password)}>
           Login
         </Button>
-        <View style={TabScreensStyles.horizontalContainer}>
+        <View style={ScreensStyles.horizontalContainer}>
           <Text
             variant="bodyMedium"
             style={{
               color: themeMode.colors.onSecondary,
-              ...TabScreensStyles.paddingVertical,
-              ...TabScreensStyles.alignCenter,
+              ...ScreensStyles.paddingVertical,
+              ...ScreensStyles.alignCenter,
             }}>
             Forgot your password?{' '}
           </Text>
           <Button
             mode="text"
             textColor={themeMode.colors.secondary}
-            onPress={() => navigation.navigate('Login')}>
+            onPress={() => navigation.navigate('ForgotPass')}>
             Reset Password
           </Button>
         </View>
@@ -93,3 +99,7 @@ function LoginView(): React.JSX.Element {
 }
 
 export default LoginView;
+function alert(errorMsg: string) {
+  throw new Error('Function not implemented.');
+}
+
