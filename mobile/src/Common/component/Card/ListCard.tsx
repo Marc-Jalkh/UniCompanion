@@ -2,6 +2,7 @@ import React from 'react';
 import {SearchableItem} from '../SearchableList/SearchableList';
 import {Avatar, Text, useTheme} from 'react-native-paper';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Badge} from 'react-native-paper';
 
 const cardStyle = StyleSheet.create({
   card: {
@@ -50,11 +51,16 @@ function ListCard(item: SearchableItem): React.JSX.Element {
           )}
         </View>
       </View>
-      <Text
-        variant="labelMedium"
-        style={{...cardStyle.rightText, color: theme.colors.onSecondary}}>
-        {item.rightText}
-      </Text>
+      <View>
+        <Text
+          variant="labelMedium"
+          style={{...cardStyle.rightText, color: theme.colors.onSecondary}}>
+          {item.rightText}
+        </Text>
+        {item.notification === '' || item.notification === '0' ? null : (
+          <Badge style={{marginTop: 10}}>{item.notification}</Badge>
+        )}
+      </View>
     </TouchableOpacity>
   );
 }

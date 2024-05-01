@@ -1,40 +1,22 @@
 import React from 'react';
-import {View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import {HeaderVariantView} from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
-import {RowData} from '../Common/component/TableDisplay/TableDisplay';
 import TablesView from '../Common/component/TableDisplay/TablesView';
-
-type DataObject = {
-  [key: string]: RowData[];
-};
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 function GradesView(): JSX.Element {
-  const data: DataObject = {
-    semester1: [
-      {
-        Course: 'Applied Mathematics',
-        Code: 'MAT201',
-        Grade: '98',
-      },
-      {
-        Course: 'Parallel AND DIstributed programing',
-        Code: 'MAT201',
-      },
-    ],
-    'Spring 2025': [
-      {
-        Course: 'Applied Mathematics',
-        Code: 'MAT201',
-        Grade: '98',
-      },
-      {
-        Course: 'Parallel AND DIstributed programing',
-        Code: 'MAT201',
-      },
-    ],
-  };
+  const api = useGetFromApi('courses/grades', (jsonData: any) => {
+    return jsonData;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
 
   const theme = useTheme();
   return (
@@ -44,7 +26,16 @@ function GradesView(): JSX.Element {
         backgroundColor: theme.colors.background,
       }}>
       <HeaderVariantView />
-      <TablesView data={data} />
+      <TablesView
+        data={data ?? {}}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
+            colors={[theme.colors.primary]}
+          />
+        }
+      />
     </View>
   );
 }

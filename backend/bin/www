@@ -9,6 +9,7 @@ var debug = require("debug")("backend:server");
 var http = require("http");
 const fs = require("fs");
 const path = require("path");
+const db = require('../config/dbconfig.js');
 
 /**
  * Get port from environment and store in Express.
@@ -17,10 +18,12 @@ class Message {
   sender_id;
   message;
   date;
-  constructor(sender_id, message, date = new Date()) {
+  read;
+  constructor(sender_id, message, date = new Date(), read = 0) {
     this.sender_id = sender_id;
     this.message = message;
     this.date = date;
+    this.read = read;
   }
 }
 function normalizePort(val) {
@@ -65,6 +68,7 @@ io.on("connection", function (socket) {
   });
   // socket.emit('connected', 'You are connected!');
   socket.on("joinRoom", async ({ user1_id, user2_id }) => {
+    const sender_id = user1_id;
     if (user1_id > user2_id) {
       const temp = user1_id;
       user1_id = user2_id;
@@ -75,32 +79,37 @@ io.on("connection", function (socket) {
     console.log(`User joined room: ${room}`);
 
     // Fetch or create chatroom entry
-    // let chatroom = await app.db('chatrooms')
-    //   .where({ user1_id: user1_id, user2_id: user2_id })
-    //   .orWhere({ user1_id: user2_id, user2_id: user1_id })
-    //   .first();
+    let chatroom = await db('chatrooms')
+      .where({ user1_id: user1_id, user2_id: user2_id })
+      .orWhere({ user1_id: user2_id, user2_id: user1_id })
+      .first();
 
-    // if (!chatroom) {
-    //   const filePath = `./chatData/chat_${user1_id}_${user2_id}.json`;
-    //   fs.writeFileSync(filePath, JSON.stringify([])); // Create an empty JSON file for the chatroom
+    if (!chatroom) {
+      const filePath = `./chatData/chat_${user1_id}_${user2_id}.json`;
+      fs.writeFileSync(filePath, JSON.stringify([])); // Create an empty JSON file for the chatroom
 
-    //   // Insert new chatroom entry in DB
-    //   await app.db('chatrooms').insert({
-    //     user1_id: user1_id,
-    //     user2_id: user2_id,
-    //     path_to_json: filePath,
-    //     created_at: new Date()
-    //   });
+      // Insert new chatroom entry in DB
+      await db('chatrooms').insert({
+        user1_id: user1_id,
+        user2_id: user2_id,
+        path_to_json: filePath,
+        created_at: new Date()
+      });
 
-    //   chatroom = {
-    //     path_to_json: filePath
-    //   };
-    // }
+      chatroom = {
+        path_to_json: filePath
+      };
+    }
 
     // Send previous messages
-    // const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
-    //map to message !!!!!
-    // socket.emit('previousMessages', messages);
+    const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+    //check if last message is unread and is i m not the sender of the message and if yes => mark it as read and save the messages and send it to the client
+    if (messages.length > 0 && messages[messages.length - 1].read > 0 && messages[messages.length - 1].sender_id !== sender_id) {
+      messages[messages.length - 1].read = 0;
+      fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
+    }
+    // map to message !!!!!
+    socket.emit('previousMessages', messages);
   });
 
   socket.on("chatMessage", async ({ user1_id, user2_id, message }) => {
@@ -111,18 +120,37 @@ io.on("connection", function (socket) {
       user2_id = temp;
     }
     const room = `chat_${user1_id}_${user2_id}`;
-    io.to(room).emit('message', new Message(sender_id, message));
-    // const chatroom = await app.db('chatrooms')
-    //   .where({ user1_id: user1_id, user2_id: user2_id })
-    //   .orWhere({ user1_id: user2_id, user2_id: user1_id })
-    //   .first();
 
-    // if (chatroom) {
-    //   const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
-    //   messages.push(message); // Append new message
-    //   fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
-    //   io.to(room).emit('message', message);
-    // }
+    const chatroom = await db('chatrooms')
+      .where({ user1_id: user1_id, user2_id: user2_id })
+      .orWhere({ user1_id: user2_id, user2_id: user1_id })
+      .first();
+  
+
+    if (chatroom) {
+      if(user1_id == 0){
+
+        
+        return;
+      }
+      var messageJson = {
+        message: message,
+        date: new Date().toISOString(),
+        sender_id: sender_id,
+        read: 1
+      };
+      const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+
+      if(messages.length > 0 && io.sockets.adapter.rooms.get(room).size == 1){
+        const lastMessage = messages[messages.length - 1];
+        messageJson.read = lastMessage.read + 1;
+      }else if(io.sockets.adapter.rooms.get(room).size == 2){
+        messageJson.read = 0;
+      }
+      messages.push(messageJson); // Append new message
+      fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
+      io.to(room).emit('message', messageJson);
+    }
   });
 
   socket.on("disconnect", function () {

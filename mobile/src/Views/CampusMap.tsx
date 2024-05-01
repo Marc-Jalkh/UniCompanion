@@ -51,15 +51,27 @@ function CampusMap(): JSX.Element {
     },
     {
       icon: 'building',
-      name: 'Gym',
+      name: 'Chapelle',
     },
     {
       icon: 'building',
-      name: 'Stadium',
+      name: 'Tenis and Football Court',
     },
     {
       icon: 'building',
       name: 'Parking Lot',
+    },
+    {
+      icon: 'building',
+      name: 'Laboratory',
+    },
+    {
+      icon: 'building',
+      name: 'Main Gate',
+    },
+    {
+      icon: 'building',
+      name: 'Secondary Gates',
     },
   ];
   return (

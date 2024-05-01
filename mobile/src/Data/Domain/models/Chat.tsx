@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 class Chat {
   id: string;
   name: string;
@@ -5,6 +6,7 @@ class Chat {
   lastMessageDate: string;
   unreadMessages: number;
   image: string;
+  role: string;
   constructor(
     id: string,
     name: string,
@@ -12,6 +14,7 @@ class Chat {
     lastMessageDate: string,
     unreadMessages: number,
     image: string,
+    role: string,
   ) {
     this.id = id;
     this.name = name;
@@ -19,6 +22,7 @@ class Chat {
     this.lastMessageDate = lastMessageDate;
     this.unreadMessages = unreadMessages;
     this.image = image;
+    this.role = role;
   }
 }
 

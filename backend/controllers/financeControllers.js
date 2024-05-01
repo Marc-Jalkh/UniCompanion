@@ -2,42 +2,50 @@ const db = require('../config/dbconfig.js');
 
 function transformFinances(finances) {
     const grouped = finances.reduce((acc, item) => {
+        // Ensure semester_id is treated as a string
         let semester = item.semester_id % 10;
-        let year = Math.floor(item.semester_id % 10)
-        if (semester === 1)
+        let year = Math.floor(item.semester_id / 10);
+        if (semester === 1) {
             semester = 'Fall';
-
-        else if (semester === 2)
+        } else if (semester === 2) {
             semester = 'Spring';
-
-        else
+        } else {
             semester = 'Summer';
+        }
+        const semesterId = `${semester} ${year}-${parseInt(year) + 1}`;
 
-        let total = item.amount
-        let discount = item.amount * item.scholarship / 100;
-        if (!acc[item.semester_id]) {
-            acc[item.semester_id] = {
-                semester_id: semester + ' ' + year + '-' + (year + 1),
+        if (!acc[semesterId]) {
+            acc[semesterId] = {
                 finances: [],
                 discount: 0,
                 total: 0
             };
         }
-        acc[item.semester_id].finances.push({
+
+        let discount = item.amount * (item.scholarship / 100);
+        let total = item.amount - discount;
+
+        // Add to the existing financials, discount, and total for the semester
+        acc[semesterId].finances.push({
             source: item.source,
             amount: item.amount
         });
-        acc[item.semester_id].discount += discount;
-        acc[item.semester_id].total += total - discount;
+        acc[semesterId].discount += discount;
+        acc[semesterId].total += total;
+
         return acc;
     }, {});
 
-    // Convert object to array and sort by semester_id in descending order
-    const semesters = Object.values(grouped).sort((a, b) => b.semester_id - a.semester_id);
-
-    return semesters;
+    // Convert the internal structure to an array format as required
+    return Object.entries(grouped).reduce((acc, [key, value]) => {
+        acc[key] = [
+            ...value.finances,
+            { source: 'Discount', amount: value.discount },
+            { source: 'Total', amount: value.total }
+        ];
+        return acc;
+    }, {});
 }
-
 
 
 const getFinance = async (req, res) => {
@@ -56,7 +64,6 @@ const getFinance = async (req, res) => {
         console.error('Error fetching data:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-
 }
 
 module.exports = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {Text, useTheme} from 'react-native-paper';
@@ -8,6 +8,8 @@ import IconRectangularButton from '../Common/component/Button/IconRectangularBut
 import ProgressCard from '../Common/component/Card/ProgressCard';
 import {useNavigation} from '@react-navigation/native';
 import {ForYou} from '../Data/Domain/models/ForYou';
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 const ForYouStyles = StyleSheet.create({
   halfScreen: {
@@ -19,12 +21,22 @@ const ForYouStyles = StyleSheet.create({
 function ForYouView(): React.JSX.Element {
   const theme = useTheme();
   const navigation = useNavigation();
-  const data = new ForYou(
-    'Computer Science',
-    'Bachelor degree',
-    '0.75',
-    'Stay Hungry, Stay Foolish - Steve Jobs',
-  );
+  const api = useGetFromApi('foryou/', (jsonData: any) => {
+    var forYouData: ForYou = {
+      quote: jsonData.quote,
+      degree: jsonData.degree,
+      level: jsonData.level,
+      progress: jsonData.progress,
+    };
+
+    return forYouData;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
   return (
     <View
       style={{
@@ -32,11 +44,19 @@ function ForYouView(): React.JSX.Element {
         backgroundColor: theme.colors.background,
       }}>
       <HeaderView />
-      <ScrollView style={{...ScreensStyles.tabContainer}}>
+      <ScrollView
+        style={{...ScreensStyles.tabContainer}}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
+            colors={[theme.colors.primary]}
+          />
+        }>
         <View style={[ScreensStyles.verticalMargin, ScreensStyles.fullHeight]}>
           <View>
             <Text style={{color: theme.colors.onSecondary}}>Quote:</Text>
-            <Text variant="titleMedium">{data.quote}</Text>
+            <Text variant="titleMedium">{data?.quote}</Text>
           </View>
           <View
             style={[
@@ -79,9 +99,9 @@ function ForYouView(): React.JSX.Element {
               </View>
             </View>
             <ProgressCard
-              major={data.degree}
-              level={data.level}
-              progress={parseFloat(data.progress)}
+              major={data?.degree ?? 'Degree'}
+              level={data?.level ?? 'Level'}
+              progress={parseFloat(data?.progress ?? '0')}
               onPress={() => navigation.navigate('Courses')}
             />
           </View>

@@ -20,8 +20,20 @@ import PageLoader from '../Common/component/Loader/PageLoader';
 import {HomeData} from '../Data/Domain/models/HomeData';
 
 function HomeView(): React.JSX.Element {
-  const api = useGetFromApi('posts/getAll', (jsonData: any) => {
-    var posts: Post[] = jsonData.map((post: any) => {
+  const welcomeMessage = () => {
+    var date = new Date();
+    var hours = date.getHours();
+    if (hours < 12) {
+      return 'Good Morning 👋';
+    }
+    if (hours < 18) {
+      return 'Good Afternoon 👋';
+    }
+    return 'Good Evening 👋';
+  };
+
+  const api = useGetFromApi('home/get', (jsonData: any) => {
+    var posts: Post[] = jsonData.posts.map((post: any) => {
       return {
         id: post.id,
         title: post.title,
@@ -30,30 +42,19 @@ function HomeView(): React.JSX.Element {
         date: post.date,
       };
     });
-    return posts;
-  });
-  const [dates, setDates] = React.useState(
-    new HomeData(
-      'Good Morning 👋',
-      'Marc Jalkh',
-      [],
-      'Spring 2024',
-      '4.0',
-      '100/100',
-    ),
-  );
-  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+    var homeData: HomeData = {
+      welcomeMessage: welcomeMessage(),
+      user: jsonData.user,
+      posts: posts,
+      semester: jsonData.semester,
+      gpa: jsonData.gpa,
+      grade: jsonData.grade,
+    };
 
-  React.useEffect(() => {
-    setDates({
-      welcomeMessage: 'Good Morning 👋',
-      user: 'Marc Jalkh',
-      posts: data ?? [],
-      semester: 'Fall 2021',
-      gpa: '3.99',
-      grade: '100/100',
-    });
-  }, [data]);
+    return homeData;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
 
   React.useEffect(() => {
     load();
@@ -82,9 +83,9 @@ function HomeView(): React.JSX.Element {
         }>
         <View>
           <Text style={{color: theme.colors.onSecondary}}>
-            {dates.welcomeMessage}
+            {data?.welcomeMessage}
           </Text>
-          <Text variant="titleLarge">{dates.user}</Text>
+          <Text variant="titleLarge">{data?.user}</Text>
         </View>
         <View
           style={{
@@ -121,9 +122,9 @@ function HomeView(): React.JSX.Element {
         </View>
         <IntoCard
           title="Semester:"
-          subTitle={dates.semester}
-          gpa={dates.gpa}
-          grade={dates.grade}
+          subTitle={data?.semester ?? 'Not enrolled'}
+          gpa={data?.gpa ?? '0.0'}
+          grade={data?.grade ?? '0/100'}
           onPress={() => navigation.navigate('Grades')}
         />
         <View style={ScreensStyles.marginTop}>
@@ -134,7 +135,7 @@ function HomeView(): React.JSX.Element {
             </TouchableOpacity>
           </View>
           <View style={ScreensStyles.marginTop}>
-            {dates.posts.map((post: Post, index: number) => (
+            {data?.posts.map((post: Post, index: number) => (
               <PostCard
                 key={index}
                 onPress={() => navigation.navigate('Post', {param1: post})}

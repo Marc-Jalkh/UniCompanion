@@ -1,29 +1,39 @@
 import React, {useCallback, useEffect} from 'react';
-import {ScrollView, View} from 'react-native';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {Button, useTheme} from 'react-native-paper';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
 import QrCard from '../Common/component/Card/QrCard';
 import ProfileCard from '../Common/component/Card/ProfileCard';
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 function ProfileView(): JSX.Element {
-  const {logout} = useAuth();
-  const data: User = {
-    id: 1,
-    name: 'Marc',
-    image:
-      'https://media.licdn.com/dms/image/C4E03AQFoiDXIjMOCuQ/profile-displayphoto-shrink_800_800/0/1653386732747?e=2147483647&v=beta&t=D2Atmb-eycuFWuxT8BslZ1nBy9P3BuARBU62PdvBrrE',
-    usekId: '202200507',
-    faculty: 'Arts & Sciences',
-  };
+  const {logout, id} = useAuth();
+
+  const api = useGetFromApi('users/student/' + id, (jsonData: any) => {
+    var user: User = {
+      id: jsonData.id,
+      name: jsonData.name,
+      usekId: jsonData.id,
+      faculty: jsonData.faculty,
+      image: jsonData.image,
+    };
+
+    return user;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
 
   const [qrCode, setQrCode] = React.useState('error');
-
+  React.useEffect(() => {
+    load();
+  }, [load]);
   const refreshQrCode = useCallback(() => {
     const currentTime = new Date().getTime().toString();
-    setQrCode(`${data.usekId}${currentTime}`);
-  }, [data.usekId]);
+    setQrCode(`${data?.usekId ?? 0}${currentTime}`);
+  }, [data?.usekId]);
 
   useEffect(() => {
     refreshQrCode();
@@ -46,12 +56,17 @@ function ProfileView(): JSX.Element {
       }}>
       <HeaderView />
       <ScrollView
-        style={[ScreensStyles.tabContainer, ScreensStyles.fullHeight]}>
+        style={[ScreensStyles.tabContainer, ScreensStyles.fullHeight]}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refresh} />
+        }>
         <ProfileCard
-          name={data.name}
-          faculty={data.faculty}
-          id={data.usekId}
-          avatar={data.image}
+          name={data?.name ?? 'error'}
+          faculty={data?.faculty ?? 'error'}
+          id={data?.usekId ?? 'error'}
+          avatar={
+            data?.image ?? 'https://www.usek.edu.lb/ContentFiles/1Logo.jpg'
+          }
         />
         <View style={ScreensStyles.marginTop}>
           <QrCard onPress={() => refreshQrCode()} title={qrCode} qr={qrCode} />

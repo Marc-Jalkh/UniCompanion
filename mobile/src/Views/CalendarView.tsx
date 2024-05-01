@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
@@ -10,6 +10,8 @@ import {
   ExpandableCalendar,
 } from 'react-native-calendars';
 import EventCard from '../Common/component/Card/EventCard';
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 class EventsPersModel {
   title: string;
@@ -69,58 +71,29 @@ function CalendarView(): JSX.Element {
   // const onMonthChange = useCallback(({dateString}) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
-  const data = useRef<EventDomainModel[]>([
-    {
-      title: 'item 1 - any js object',
-      time: '14:00',
-      description: '1.45 hours     •     Room E200',
-      date: '2024-03-10',
-    },
-    {
-      title: 'item 2 - any js object',
-      time: '14:00',
-      description: '1.45 hours     •     Room E200',
-      date: '2024-03-11',
-    },
-    {
-      title: 'item 3 - any js object',
-      time: '14:00',
-      description: '1.45 hours     •     Room E200',
-      date: '2024-03-12',
-    },
-    {
-      title: 'item 4 - any js object',
-      date: '2024-03-13',
-      time: '14:00',
-      description: '',
-    },
-  ]);
 
-  const [ITEMS, setITEMS] = useState<EventsPersModel[]>([
-    {
-      title: '2024-03-13',
-      data: [
-        {
-          name: '',
-          timing: '',
-          location: '',
-        },
-      ],
-    },
-    {
-      title: '2024-04-13',
-      data: [
-        {
-          name: '',
-          timing: '',
-          location: '',
-        },
-      ],
-    },
-  ]);
-  useEffect(() => {
-    setITEMS(EventDomainModelToEventsPersModel(data.current));
-  }, []);
+  const api = useGetFromApi('events/getall', (jsonData: any) => {
+    var eventsData: EventDomainModel[] = jsonData.map((event: any) => {
+      const startTimeDate = new Date(event.start);
+      const startTime = `${startTimeDate.getHours()}:${startTimeDate.getMinutes()}`;
+      return {
+        title: event.title,
+        description: event.location,
+        date: event.start,
+        time: startTime,
+      };
+    });
+    var test = EventDomainModelToEventsPersModel(eventsData);
+
+    return test;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
+
   return (
     <View
       style={{
@@ -129,7 +102,7 @@ function CalendarView(): JSX.Element {
       }}>
       <HeaderView />
       <CalendarProvider
-        date={ITEMS[1]?.title}
+        date={data?.[1]?.title ?? '2024-03-13'}
         // onDateChanged={onDateChanged}
         // onMonthChange={onMonthChange}
         showTodayButton
@@ -180,7 +153,7 @@ function CalendarView(): JSX.Element {
         />
 
         <AgendaList
-          sections={ITEMS}
+          sections={data ?? []}
           renderItem={item => (
             <EventCard
               title={item.item.name}
@@ -189,6 +162,13 @@ function CalendarView(): JSX.Element {
               isNow={false}
             />
           )}
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={() => refresh()}
+              colors={[theme.colors.primary]}
+            />
+          }
           // renderSectionHeader={item => <Text>{item.section.title}</Text>}
           scrollToNextEvent
           dayFormat={'yyyy-MM-d'}

@@ -29,13 +29,16 @@ class SearchableListProps {
   isSearchable: boolean;
   searchPlaceholder: string;
   rightIcon: boolean;
+  refreshControl: React.JSX.Element;
 
   constructor(
+    refreshControl: React.JSX.Element,
     items: SearchableItem[],
     isSearchable: boolean,
     searchPlaceholder: string,
     rightIcon: boolean = true,
   ) {
+    this.refreshControl = refreshControl;
     this.items = items;
     this.isSearchable = isSearchable;
     this.searchPlaceholder = searchPlaceholder;
@@ -47,6 +50,7 @@ class SearchableItem {
   image: string;
   title: string;
   subTitle: string | null;
+  notification: string;
   onPress: () => void;
   rightText: string | null;
 
@@ -56,7 +60,9 @@ class SearchableItem {
     subTitle: string | null = null,
     onPress: () => void,
     rightText: string | null = null,
+    notification: string = '',
   ) {
+    this.notification = notification;
     this.image = image;
     this.title = title;
     this.subTitle = subTitle;
@@ -121,7 +127,11 @@ function SearchableList(props: SearchableListProps): React.JSX.Element {
           Try our new Ai powered Bot
         </Text>
       </View>
-      <SearchList items={props.items} query={props.isSearchable ? query : ''} />
+      <SearchList
+        refreshControl={props.refreshControl}
+        items={props.items}
+        query={props.isSearchable ? query : ''}
+      />
     </View>
   );
 }
@@ -129,10 +139,15 @@ function SearchableList(props: SearchableListProps): React.JSX.Element {
 class SearchListProps {
   items: SearchableItem[];
   query: string;
-
-  constructor(items: SearchableItem[], query: string) {
+  refreshControl: React.JSX.Element;
+  constructor(
+    items: SearchableItem[],
+    query: string,
+    refreshControl: React.JSX.Element,
+  ) {
     this.items = items;
     this.query = query;
+    this.refreshControl = refreshControl;
   }
 }
 
@@ -150,6 +165,7 @@ function SearchList(props: SearchListProps): React.JSX.Element {
   return (
     <FlatList
       data={items}
+      refreshControl={props.refreshControl}
       renderItem={({item}) => (
         <ListCard
           image={item.image}
@@ -157,6 +173,7 @@ function SearchList(props: SearchListProps): React.JSX.Element {
           subTitle={item.subTitle}
           onPress={item.onPress}
           rightText={item.rightText}
+          notification={item.notification}
         />
       )}
       style={ScreensStyles.smallMarginTop}

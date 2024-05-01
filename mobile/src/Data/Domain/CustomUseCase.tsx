@@ -27,7 +27,7 @@ export function useCustomApi<Api extends (...args: any[]) => Promise<any>>(
         })
         .finally(() => setIsLoading(false));
     },
-    [api, data, isLoading],
+    [api, data, errorMessage, isLoading],
   );
 
   const refresh = useCallback(() => {

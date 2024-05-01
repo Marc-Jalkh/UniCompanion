@@ -17,6 +17,7 @@ import ChatBubble from '../Common/component/other/ChatBubble';
 import {useRoute} from '@react-navigation/native';
 import {Socket, io} from 'socket.io-client';
 import {useAuth} from '../Data/Domain/AuthenticationContext';
+import {baseUrl} from '../Data/Remote/utils/Helpers';
 
 const SingleChatStyle = StyleSheet.create({
   inputContainer: {
@@ -53,7 +54,7 @@ const SingleChat: React.FC = () => {
   const param4Value: string = route.params?.param4;
   const socket = useRef<Socket | null>(null);
   if (!socket.current) {
-    socket.current = io('http://192.168.2.240:3000');
+    socket.current = io(baseUrl);
   }
   function dateToMessageDate(date: Date): string {
     const dates = new Date(date);

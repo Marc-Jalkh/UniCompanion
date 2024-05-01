@@ -7,13 +7,14 @@ const getStudent = async (req, res) => {
     const row = await db('users').select(
                     'users.user_id as id',
                     db.raw("CONCAT(users.first_name, ' ', users.last_name) AS name"),
-                    'users.usek_id as usekId',
+                    'users.user_id as userId',
+                    'picture as image',
                     'faculties.name as faculty')
                     .join('users_degree', 'users.user_id', '=', 'users_degree.user_id')
                     .join('programs', 'users_degree.program_id', '=', 'programs.program_id')
                     .join('departments', 'programs.department_id', '=', 'departments.department_id')
                     .join('faculties', 'departments.faculty_id', '=', 'faculties.faculty_id')
-                    .where('roles.name', 'student')
+                    // .where('roles.name', 'student')
                     .where('users.user_id', user_id)
                     .first();
 
@@ -26,6 +27,7 @@ const getStudent = async (req, res) => {
         id: row.id,
         name: row.name,
         usekId: row.usekId,
+        image: row.image,
         faculty: row.faculty
       };
 
@@ -54,6 +56,37 @@ const getAllStudents = async (req, res) => {
         name: row.name,
         usekId: row.usekId,
         faculty: row.faculty
+      }));
+
+    res.json(students);
+}
+
+const getAllUsers = async (req, res) => {
+    const user_id = req.user_id;
+
+    const rows = await db('users').select(
+                    'users.user_id as id',
+                    db.raw("CONCAT(users.first_name, ' ', users.last_name) AS name"),
+                    'users.user_id as usekId',
+                    'roles.name as role',
+                    'picture as image'
+                )
+                .join('users_roles', 'users.user_id', '=', 'users_roles.user_id')
+                .join('roles', 'users_roles.role_id', '=', 'roles.role_id')
+                .where('users.user_id', '!=', user_id)
+                .where('users.user_id', '!=', 0);
+
+    if (!rows) {
+        res.status(404).send("No students found");
+        return;
+    }
+
+    const students = rows.map(row => ({
+        id: row.id,
+        name: row.name,
+        usekId: row.usekId,
+        faculty: row.role,
+        image: row.image
       }));
 
     res.json(students);
@@ -147,5 +180,6 @@ module.exports = {
     updatUser,
     deleteUser,
     addUser,
-    getDegree
+    getDegree,
+    getAllUsers
 }

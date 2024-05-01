@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import PostCard from '../Common/component/Card/PostCard';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {HeaderVariantView} from '../Common/component/Header/Header';
@@ -37,7 +37,14 @@ function Posts(): React.JSX.Element {
       <HeaderVariantView />
       <ScrollView
         style={ScreensStyles.scrollTabContainer}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
+            colors={[theme.colors.primary]}
+          />
+        }>
         <View>
           <Text variant="titleMedium">Check out the latest posts!</Text>
         </View>

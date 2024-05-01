@@ -1,37 +1,36 @@
 import React from 'react';
-import {View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import {HeaderVariantView} from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
 import {SearchableList} from '../Common/component/SearchableList/SearchableList';
 import {useNavigation} from '@react-navigation/native';
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 function PeopleView(): JSX.Element {
-  const data: User[] = [
-    {
-      id: 1,
-      name: 'Marc',
-      image: 'https://via.placeholder.com/150',
-      usekId: '202200507',
-      faculty: '',
-    },
-    {
-      id: 2,
-      name: 'Marcs',
-      image: 'https://via.placeholder.com/150',
-      usekId: '202200507',
-      faculty: 'test',
-    },
-    {
-      id: 3,
-      name: 'Marcx',
-      image: 'https://via.placeholder.com/150',
-      usekId: '202200507',
-      faculty: '',
-    },
-  ];
-  const navigation = useNavigation();
+  const api = useGetFromApi('users/all', (jsonData: any) => {
+    var users: User[] = jsonData.map((uuser: any) => {
+      return {
+        id: uuser.id,
+        name: uuser.name,
+        image: uuser.image,
+        usekId: uuser.usekId,
+        faculty: uuser.faculty,
+      };
+    });
 
+    return users;
+  });
+
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
+
+  const navigation = useNavigation();
+  const theme = useTheme();
   return (
     <View
       style={{
@@ -40,7 +39,14 @@ function PeopleView(): JSX.Element {
       }}>
       <HeaderVariantView />
       <SearchableList
-        items={data.map(user => {
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
+            colors={[theme.colors.primary]}
+          />
+        }
+        items={(data ?? []).map(user => {
           return {
             image: user.image,
             title: user.name,
@@ -54,6 +60,7 @@ function PeopleView(): JSX.Element {
               });
             },
             rightText: 'Right Text',
+            notification: '0',
           };
         })}
         isSearchable={true}

@@ -16,8 +16,10 @@ const getHome = async (req, res) => {
         {
             const total_credits_earned = result.total_credits_earned;
             const total_credits_required = result.total_credits_required;
-            const percentageCompleted = (total_credits_earned / total_credits_required) * 100;
-            res.json({ progress: `${percentageCompleted.toFixed(2)}%`, degree: result.degree});
+            const percentageCompleted = (total_credits_earned / total_credits_required) ;
+            const degree = result.degree.split(' ')[0];
+            const degreeName = result.degree.substring(degree.length + 4 , result.degree.length );
+            res.json({ progress: `${percentageCompleted.toFixed(2)}%`, level: degree, degree: degreeName});
         } else 
             res.status(404).json({ error: 'No data found for this user.' });
         

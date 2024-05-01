@@ -9,16 +9,18 @@ type DataObject = {
 };
 class TableViewProps {
   data: DataObject;
-
-  constructor(data: DataObject) {
+  refreshControl?: JSX.Element;
+  constructor(data: DataObject, refreshControl?: JSX.Element) {
     this.data = data;
+    this.refreshControl = refreshControl;
   }
 }
 function TablesView(props: TableViewProps): JSX.Element {
   return (
     <ScrollView
       style={ScreensStyles.scrollTabContainer}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      refreshControl={props.refreshControl}>
       {Object.keys(props.data).map(key => (
         <View key={key} style={ScreensStyles.marginTop}>
           <Text variant="titleMedium">{key} :</Text>

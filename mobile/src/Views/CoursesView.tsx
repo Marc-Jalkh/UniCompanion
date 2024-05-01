@@ -1,32 +1,22 @@
 import React from 'react';
-import {View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import {HeaderVariantView} from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
 import {useTheme} from 'react-native-paper';
-import {RowData} from '../Common/component/TableDisplay/TableDisplay';
 import TablesView from '../Common/component/TableDisplay/TablesView';
-
-type DataObject = {
-  [key: string]: RowData[];
-};
+import {useGetFromApi} from '../Data/Remote/utils/Helpers';
+import {useCustomApi} from '../Data/Domain/CustomUseCase';
 
 function CoursesView(): JSX.Element {
-  const data: DataObject = {
-    semester1: [
-      {
-        Source: 'Arts and sciences school',
-        Amount: '1000',
-        name: 'John',
-        age: '30',
-      },
-      {Source: 'Scholarship', Amount: '-500'},
-    ],
-    semester2: [
-      {Source: 'Arts and sciences school', Amount: '1000'},
-      {Source: 'Scholarship', Amount: '-500'},
-    ],
-  };
+  const api = useGetFromApi('courses/done', (jsonData: any) => {
+    return jsonData;
+  });
 
+  const {data, isLoading, load, refresh} = useCustomApi(() => api);
+
+  React.useEffect(() => {
+    load();
+  }, [load]);
   const theme = useTheme();
   return (
     <View
@@ -35,7 +25,16 @@ function CoursesView(): JSX.Element {
         backgroundColor: theme.colors.background,
       }}>
       <HeaderVariantView />
-      <TablesView data={data} />
+      <TablesView
+        data={data ?? {}}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
+            colors={[theme.colors.primary]}
+          />
+        }
+      />
     </View>
   );
 }
