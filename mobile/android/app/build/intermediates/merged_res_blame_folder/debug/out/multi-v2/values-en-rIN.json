@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.unicompanion.app-mergeDebugResources-26:/values-en-rIN/values-en-rIN.xml",
+            "outputFile": "com.unicompanion.app-mergeDebugResources-34:/values-en-rIN/values-en-rIN.xml",
             "map": [
                 {
                     "source": "/Users/marcjalkh/.gradle/caches/transforms-3/b3627ca143232ec2ceb6e319eb18971d/transformed/appcompat-1.6.1/res/values-en-rIN/values-en-rIN.xml",

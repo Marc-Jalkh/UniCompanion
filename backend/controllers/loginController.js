@@ -34,7 +34,7 @@ const login = async (req, res) => {
 
         permissions = 'user'
         const tokenPayload = { id, permissions };
-        const token = jwt.sign(tokenPayload, TOKEN_KEY, { expiresIn: '1h' });
+        const token = jwt.sign(tokenPayload, TOKEN_KEY, { expiresIn: '48h' });
         res.json({ token });
 
     } catch (error) {

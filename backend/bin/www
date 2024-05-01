@@ -4,16 +4,28 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('backend:server');
-var http = require('http');
-const fs = require('fs');
-const path = require('path');
+var app = require("../app");
+var debug = require("debug")("backend:server");
+var http = require("http");
+const fs = require("fs");
+const path = require("path");
+const db = require('../config/dbconfig.js');
 
 /**
  * Get port from environment and store in Express.
  */
-
+class Message {
+  sender_id;
+  message;
+  date;
+  read;
+  constructor(sender_id, message, date = new Date(), read = 0) {
+    this.sender_id = sender_id;
+    this.message = message;
+    this.date = date;
+    this.read = read;
+  }
+}
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -30,8 +42,8 @@ function normalizePort(val) {
   return false;
 }
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
 /**
  * Create HTTP server.
@@ -48,16 +60,26 @@ io.attach(server);
 /**
  * Socket.IO chat handling
  */
-io.on('connection', function(socket) {
-  console.log('A user connected');
-
-  socket.on('joinRoom', async ({ user1_id, user2_id }) => {
+io.on("connection", function (socket) {
+  console.log("A user connected");
+  socket.emit("connected", "You are connected!");
+  socket.on("connected", function (data) {
+    console.log("User connected:", data);
+  });
+  // socket.emit('connected', 'You are connected!');
+  socket.on("joinRoom", async ({ user1_id, user2_id }) => {
+    const sender_id = user1_id;
+    if (user1_id > user2_id) {
+      const temp = user1_id;
+      user1_id = user2_id;
+      user2_id = temp;
+    }
     const room = `chat_${user1_id}_${user2_id}`;
     socket.join(room);
     console.log(`User joined room: ${room}`);
 
     // Fetch or create chatroom entry
-    let chatroom = await app.db('chatrooms')
+    let chatroom = await db('chatrooms')
       .where({ user1_id: user1_id, user2_id: user2_id })
       .orWhere({ user1_id: user2_id, user2_id: user1_id })
       .first();
@@ -67,7 +89,7 @@ io.on('connection', function(socket) {
       fs.writeFileSync(filePath, JSON.stringify([])); // Create an empty JSON file for the chatroom
 
       // Insert new chatroom entry in DB
-      await app.db('chatrooms').insert({
+      await db('chatrooms').insert({
         user1_id: user1_id,
         user2_id: user2_id,
         path_to_json: filePath,
@@ -81,26 +103,58 @@ io.on('connection', function(socket) {
 
     // Send previous messages
     const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+    //check if last message is unread and is i m not the sender of the message and if yes => mark it as read and save the messages and send it to the client
+    if (messages.length > 0 && messages[messages.length - 1].read > 0 && messages[messages.length - 1].sender_id !== sender_id) {
+      messages[messages.length - 1].read = 0;
+      fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
+    }
+    // map to message !!!!!
     socket.emit('previousMessages', messages);
   });
 
-  socket.on('chatMessage', async ({ user1_id, user2_id, message }) => {
+  socket.on("chatMessage", async ({ user1_id, user2_id, message }) => {
+    const sender_id = user1_id;
+    if (user1_id > user2_id) {
+      const temp = user1_id;
+      user1_id = user2_id;
+      user2_id = temp;
+    }
     const room = `chat_${user1_id}_${user2_id}`;
-    const chatroom = await app.db('chatrooms')
+
+    const chatroom = await db('chatrooms')
       .where({ user1_id: user1_id, user2_id: user2_id })
       .orWhere({ user1_id: user2_id, user2_id: user1_id })
       .first();
+  
 
     if (chatroom) {
+      if(user1_id == 0){
+
+        
+        return;
+      }
+      var messageJson = {
+        message: message,
+        date: new Date().toISOString(),
+        sender_id: sender_id,
+        read: 1
+      };
       const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
-      messages.push(message); // Append new message
+
+      if(messages.length > 0 && io.sockets.adapter.rooms.get(room).size == 1){
+        const lastMessage = messages[messages.length - 1];
+        messageJson.read = lastMessage.read + 1;
+      }else if(io.sockets.adapter.rooms.get(room).size == 2){
+        messageJson.read = 0;
+      }
+      messages.push(messageJson); // Append new message
       fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
-      io.to(room).emit('message', message);
+      io.to(room).emit('message', messageJson);
     }
   });
 
-  socket.on('disconnect', function() {
-    console.log('User disconnected');
+  socket.on("disconnect", function () {
+    console.log("User disconnected");
   });
 });
 
@@ -109,28 +163,26 @@ io.on('connection', function(socket) {
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on("error", onError);
+server.on("listening", onListening);
 
 // Remaining functions (normalizePort, onError, onListening) as they were
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -144,8 +196,6 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
 }
