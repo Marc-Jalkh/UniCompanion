@@ -151,19 +151,6 @@ io.on("connection", function (socket) {
       fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
       io.to(room).emit('message', messageJson);
     }
-    const room = `chat_${user1_id}_${user2_id}`;
-    io.to(room).emit('message', new Message(sender_id, message));
-    // const chatroom = await app.db('chatrooms')
-    //   .where({ user1_id: user1_id, user2_id: user2_id })
-    //   .orWhere({ user1_id: user2_id, user2_id: user1_id })
-    //   .first();
-
-    // if (chatroom) {
-    //   const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
-    //   messages.push(message); // Append new message
-    //   fs.writeFileSync(chatroom.path_to_json, JSON.stringify(messages)); // Save back to file
-    //   io.to(room).emit('message', message);
-    // }
   });
 
   socket.on("disconnect", function () {
