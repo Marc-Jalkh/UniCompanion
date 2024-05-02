@@ -21,7 +21,7 @@ const LoginForm = () => {
       setError("Please fill in all fields");
     } else {
       // Perform login
-      const token = await fetch("http://localhost:3000/login", {
+      const token = await fetch("http://localhost:3000/login/admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

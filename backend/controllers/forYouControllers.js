@@ -16,7 +16,7 @@ const getforYou = async (req, res) => {
                 .join('departments', 'programs.department_id', 'departments.department_id')
                 .join('faculties', 'departments.faculty_id', 'faculties.faculty_id')
                 .select('faculties.name as faculty_name').first()
-            res.json({ faculty: faculty.faculty_name });
+            res.json({ progress: `100%`, level: "Professor", degree: faculty.faculty_name });
             return;
 
         }

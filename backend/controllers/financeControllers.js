@@ -43,6 +43,9 @@ function transformFinances(finances) {
             { source: 'Discount', amount: value.discount },
             { source: 'Total', amount: value.total }
         ];
+        if (value.discount === 0) {
+            acc[key] = acc[key].filter(item => item.source !== 'Discount');
+        }
         return acc;
     }, {});
 }

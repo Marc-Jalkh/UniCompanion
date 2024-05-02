@@ -131,7 +131,7 @@ io.on("connection", function (socket) {
 
     if (chatroom) {
       if (user1_id == 0) {
-        const message = dialog(message, user2_id, chatroom.path_to_json);
+        const messageJson = await dialog(message, user2_id, chatroom.path_to_json);
         io.to(room).emit('message', messageJson);
         return;
       }
@@ -171,7 +171,7 @@ async function dialog(message, userID, path) {
     read: 0
   };
 
-  const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
+  const messages = JSON.parse(fs.readFileSync(path));
   messages.push(messageJson);
   // Correct way to generate session path
   const sessionPath = sessionClient.projectAgentSessionPath(
@@ -214,7 +214,6 @@ async function dialog(message, userID, path) {
   } catch (error) {
     console.error("Error writing to JSON file:", error);
   }
-
   return messageJson;
 }
 
