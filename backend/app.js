@@ -6,7 +6,7 @@ var logger = require('morgan');
 var socketIo = require('socket.io');
   
 
-const verifyToken = require('./controllers/authorization.js')
+const authorization = require('./controllers/authorization.js')
 var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
 const chatRoute = require('./routes/chat.js');
@@ -38,7 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoute);
 
-app.use(verifyToken);
+app.use(authorization.verifyToken);
+
+app.use(authorization.logs);
 
 app.use('/chats', chatRoute);
 

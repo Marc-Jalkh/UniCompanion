@@ -23,7 +23,26 @@ const getHome = async (req, res) => {
 
         const posts = await db('posts').select('*');
 
+        const role = await db('users_roles')
+            .join('roles', 'users_roles.role_id', 'roles.role_id')
+            .where('users_roles.user_id', user_id)
+            .andWhere('roles.name', 'student')
+            .select('users_roles.user_id', 'roles.name as role_name').first()
 
+
+        const semester = getCurrentSemester();
+
+        if (!role) {
+            data = {
+                user: user.salutation + ' ' + user.first_name + ' ' + user.last_name,
+                posts,
+                semester: semester.semesterString + ' ' + (semester.year - 1) + '-' + semester.year,
+                gpa: 0,
+                grade: 0
+            }
+            res.status(200).json(data);
+            return;
+        }
         // First, retrieve the grades and credits for the student
         const results = await db('users_courses')
             .join('courses_offering', 'users_courses.course_id', 'courses_offering.courses_offering_id')
@@ -52,11 +71,10 @@ const getHome = async (req, res) => {
         const grade = totalWeightedGrades / totalCredits;
         const gpa = totalWeightedGPA / totalCredits;
 
-        const semester = getCurrentSemester();
 
         // Calculate the weighted average grade
         data = {
-            user: user.salutation + ' ' + user.first_name +  ' ' + user.last_name,
+            user: user.salutation + ' ' + user.first_name + ' ' + user.last_name,
             posts,
             semester: semester.semesterString + ' ' + (semester.year - 1) + '-' + semester.year,
             gpa,

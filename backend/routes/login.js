@@ -7,5 +7,7 @@ const router = Router();
 router.post('/', controller.login); 
 
 router.post('/logout', controller.logout);
+
+router.post('/admin', controller.loginAdmin);
   
 module.exports = router;
