@@ -17,7 +17,7 @@ const editPost = async (req, res) => {
         content: updates.content,
         picture: updates.image,
         date: updates.date,
-        'isHighlighted' : isHighlited
+        'ishighlighted' : updates.isHighlited
     }
 
     try {
@@ -64,17 +64,18 @@ const deletePost = async (req, res) => {
 
 const createPost = async (req, res) => {
     const { title, content, image, date, isHighlited } = req.body; // Assume posts have title, content, and picture attributes
-    
+    console.log(req.body);
     try {
+
         await db('posts').insert({
             title,
             content,
             'picture': image,
             date,
-            'isHighlighted' : isHighlited
+            'ishighlighted' : isHighlited
         })
-
-        res.status(201).send({ message: 'Post created successfully' })
+        console.log('Post created successfully');
+        res.status(200).send({ message: 'Post created successfully' })
     } catch (error) {
         res.status(500).send({ message: 'Error creating post', error });
     }

@@ -10,22 +10,25 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import styles from "../../styles/page.module.css";
 import { useRouter } from "next/navigation";
-
-type Anchor = "top" | "left" | "bottom" | "right";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Heading() {
   const [state, setState] = React.useState(false);
   const Router = useRouter();
   const routes = React.useRef([
-    { name: "Dashboard", route: "/Dashboard", icon: <InboxIcon />},
-    { name: "Posts", route: "/Posts", icon: <InboxIcon /> },
+    { name: "Dashboard", route: "/Dashboard", icon: <HomeIcon /> },
+    { name: "Posts", route: "/Posts", icon: <EditNoteIcon /> },
+    { name: "Users", route: "/Users", icon: <AccountBoxIcon /> },
+    { name: "Logout", route: "/logout", icon: <LogoutIcon /> },
   ]);
   const list = () => (
     <Box
@@ -37,12 +40,16 @@ export default function Heading() {
       onKeyDown={() => setState(!state)}
     >
       <List>
-        {routes.current.map(item => (
-          <ListItem onClick={() => { Router.push(item.route)}} key={item.name} disablePadding>
+        {routes.current.map((item) => (
+          <ListItem
+            onClick={() => {
+              Router.push(item.route);
+            }}
+            key={item.name}
+            disablePadding
+          >
             <ListItemButton>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
+              <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
@@ -68,6 +75,11 @@ export default function Heading() {
       >
         <DrawerHeader>
           <IconButton onClick={() => setState(false)}>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKgZOmUt2SDfje1IfJOgkpPPz078ASvhZy02XZGEu5HcMpuvVLWxjY9I0a0KBY3BM6coA&usqp=CAU"
+              alt="logo"
+              style={{ width: "100px", height: "100px" , marginRight: "50px"}}
+            />
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
@@ -80,7 +92,7 @@ export default function Heading() {
         className={styles.menuButton}
         onClick={() => setState(!state)}
       >
-        <MenuIcon sx={{fontSize: '35px'}} />
+        <MenuIcon sx={{ fontSize: "35px" }} />
       </Button>
     </div>
   );
