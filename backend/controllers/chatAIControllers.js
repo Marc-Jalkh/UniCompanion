@@ -116,6 +116,7 @@ const normalChats = async (req, res) => {
           )
           .first();
         const path = room.path_to_json;
+        console.log(otherUser);
         const messages = JSON.parse(fs.readFileSync(`${path}`));
         if (messages.length == 0) {
           return;
@@ -131,7 +132,8 @@ const normalChats = async (req, res) => {
           },
           last_message: lastMessage ? lastMessage.message : "No messages yet",
           last_message_date: lastMessage.date ?? null,
-          unreadMessages: lastMessage.sender_id == userId ? 0 : lastMessage.read,
+          unreadMessages:
+            lastMessage.sender_id == userId ? 0 : lastMessage.read,
         };
       })
     );

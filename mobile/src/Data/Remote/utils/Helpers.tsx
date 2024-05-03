@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const ip = '192.168.0.51';
+const ip = '192.168.1.107';
 export const baseUrl: string = 'http://' + ip + ':3000/';
 
 async function useGetFromApi<T>(

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {RefreshControl, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
@@ -10,8 +10,20 @@ import {useCustomApi} from '../Data/Domain/CustomUseCase';
 import {useGetFromApi} from '../Data/Remote/utils/Helpers';
 
 function ChatsView(): JSX.Element {
+  const [aiMessages, setAiMessages] = useState<Message>({
+    message: 'Hello, I am your AI Assistant. How can I help you today?',
+    date: new Date(),
+    isMine: true,
+  });
   const api = useGetFromApi('chats/normalChats', (jsonData: any) => {
     var chats: Chat[] = jsonData.map((chat: any) => {
+      if (chat.user.id === 0) {
+        setAiMessages({
+          message: chat.last_message,
+          date: chat.last_message_date,
+          isMine: chat.unreadMessages,
+        });
+      }
       return {
         id: chat.user.id,
         name: chat.user.name,
@@ -23,7 +35,7 @@ function ChatsView(): JSX.Element {
       };
     });
 
-    return chats;
+    return chats.filter(chat => chat.id != '0');
   });
   const theme = useTheme();
   const {data, isLoading, load, refresh} = useCustomApi(() => api);
@@ -53,7 +65,7 @@ function ChatsView(): JSX.Element {
             image:
               'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
             title: 'AI Companion',
-            subTitle: 'SubTitle',
+            subTitle: aiMessages.message,
             onPress: () =>
               navigation.navigate('SingleChat', {
                 param1: 'AI Companion',
@@ -62,7 +74,7 @@ function ChatsView(): JSX.Element {
                 param4:
                   'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
               }),
-            rightText: 'Right Text',
+            rightText: 'Usek',
             notification: '0',
           },
           ...(data ?? []).map(chat => {
