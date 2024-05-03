@@ -8,9 +8,13 @@ const login = async (req, res) => {
     const { id, password } = req.body;
 
     try {
-        const user = await db('users').select('password').where({ user_id: id }).first();
 
-        console.log(user)
+        const user = await db('users')
+            .join('users_roles', 'users.user_id', 'users_roles.user_id')
+            .join('roles', 'users_roles.role_id', 'roles.role_id')
+            .select('users.password', 'roles.name as role')
+            .where('users.user_id', id)
+            .first();
 
         if (!user) {
             // User does not exist
@@ -32,8 +36,8 @@ const login = async (req, res) => {
 
         const TOKEN_KEY = process.env.TOKEN_KEY || 'key'
 
-        permissions = 'user'
-        const tokenPayload = { id, permissions };
+        let role = user.role
+        const tokenPayload = { id, role };
         const token = jwt.sign(tokenPayload, TOKEN_KEY, { expiresIn: '48h' });
         res.json({ token });
 
@@ -84,8 +88,8 @@ const loginAdmin = async (req, res) => {
 
         const TOKEN_KEY = process.env.TOKEN_KEY || 'key'
 
-        permissions = 'user'
-        const tokenPayload = { id, permissions };
+        let role = user.role
+        const tokenPayload = { id, role };
         const token = jwt.sign(tokenPayload, TOKEN_KEY, { expiresIn: '48h' });
         res.json({ token });
 

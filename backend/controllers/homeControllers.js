@@ -18,21 +18,15 @@ const convertToGPA = (grade) => {
 
 const getHome = async (req, res) => {
     const user_id = req.user_id;
+    const role = req.role;
     try {
         const user = await db('users').select('salutation', 'first_name', 'last_name').where({ user_id }).first();
 
         const posts = await db('posts').select('*');
 
-        const role = await db('users_roles')
-            .join('roles', 'users_roles.role_id', 'roles.role_id')
-            .where('users_roles.user_id', user_id)
-            .andWhere('roles.name', 'student')
-            .select('users_roles.user_id', 'roles.name as role_name').first()
-
-
         const semester = getCurrentSemester();
 
-        if (!role) {
+        if (role !== 'student') {
             data = {
                 user: user.salutation + ' ' + user.first_name + ' ' + user.last_name,
                 posts,

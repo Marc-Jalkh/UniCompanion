@@ -64,7 +64,7 @@ const deletePost = async (req, res) => {
 
 const createPost = async (req, res) => {
     const { title, content, image, date, isHighlited } = req.body; // Assume posts have title, content, and picture attributes
-    console.log(req.body);
+    
     try {
 
         await db('posts').insert({

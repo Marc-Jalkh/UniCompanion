@@ -2,14 +2,11 @@ const db = require('../config/dbconfig.js');
 
 const getforYou = async (req, res) => {
     const user_id = req.user_id;
+    const role = req.role;
     try {
-        const role = await db('users_roles')
-            .join('roles', 'users_roles.role_id', 'roles.role_id')
-            .where('users_roles.user_id', user_id)
-            .andWhere('roles.name', 'student')
-            .select('users_roles.user_id', 'roles.name as role_name').first()
+        
 
-        if (!role) {
+        if (role !== 'student') {
             const faculty = await db('users_degree')
                 .where('user_id', user_id)
                 .join('programs', 'users_degree.program_id', 'programs.program_id')

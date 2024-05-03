@@ -1,9 +1,18 @@
 const db = require("../config/dbconfig.js");
+const { use } = require("../routes/courses.js");
+const getCurrentSemester = require("../utils/semester.js");
 
 const getCourses = async (req, res) => {
-    const userId = req.user_id; // Assuming this comes from authentication middleware
-
+  const userId = req.user_id;
+  const role = req.role;
   try {
+
+    if (role !== 'student') {
+      let courses = await getInstructorCourses(userId)
+      console.log(courses)
+      res.json(courses)
+      return;
+    }
     const courses = await db('users_courses as uc')
       .join('courses_offering as co', 'uc.course_id', 'co.courses_offering_id')
       .join('courses as c', 'co.course_id', 'c.course_id')
@@ -18,23 +27,23 @@ const getCourses = async (req, res) => {
     const semesterGroups = {};
 
     courses.forEach(course => {
-        let semester = course.crn % 10;
-        let year = Math.floor(course.crn / 10)
-        if (semester === 1)
-            semester = 'Fall';
+      let semester = course.crn % 10;
+      let year = Math.floor(course.crn / 10)
+      if (semester === 1)
+        semester = 'Fall';
 
-        else if (semester === 2)
-            semester = 'Spring';
+      else if (semester === 2)
+        semester = 'Spring';
 
-        else
-            semester = 'Summer';
-      
+      else
+        semester = 'Summer';
+
       const semesterKey = `${semester} ${year}-${year + 1}`;
 
       if (!semesterGroups[semesterKey]) {
         semesterGroups[semesterKey] = [];
       }
-      
+
       semesterGroups[semesterKey].push({
         title: course.title,
         location: course.location,
@@ -51,7 +60,13 @@ const getCourses = async (req, res) => {
 
 const getDone = async (req, res) => {
   const user_id = req.user_id;
+  const role = req.role;
   try {
+    if (role !== 'student') {
+      let courses = await getInstructorCourses(user_id)
+      res.send(courses)
+      return;
+    }
     const courses = await db("programs_courses as pc")
       .join("programs as p", "p.program_id", "pc.program_id")
       .join("users_degree as ud", "ud.program_id", "p.program_id")
@@ -85,8 +100,36 @@ const getDone = async (req, res) => {
     });
 
     res.json(categorizedCourses);
-  } catch (error) {}
+  } catch (error) { }
 };
+
+async function getInstructorCourses(userId) {
+  
+  const courses = await db('courses_offering as co')
+    .join('courses as c', 'co.course_id', 'c.course_id')
+    .select('c.title', 'co.crn', 'co.location')
+    .where('co.instructor_id', userId);
+  
+  const semester = getCurrentSemester();
+  let crn = semester.year * 10 + semester.semester;
+  const semesterString = semester.semesterString + ' ' + (semester.year - 1) + '-' + semester.year;
+  const filteredCourses = courses.filter(course => course.crn == crn);
+  
+  // Organize courses into an object by semester string
+  let coursesBySemester = {};
+  for (let course of filteredCourses) {
+    // Assuming we have a function to get the semester string by semester_id
+    if (!coursesBySemester[semester]) {
+      coursesBySemester[semesterString] = [];
+    }
+    coursesBySemester[semesterString].push({
+      title: course.title,
+      location: course.location,
+      crn: course.crn
+    });
+  }
+  return coursesBySemester;
+}
 
 module.exports = {
   getCourses,
