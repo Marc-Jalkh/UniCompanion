@@ -10,20 +10,8 @@ import {useCustomApi} from '../Data/Domain/CustomUseCase';
 import {useGetFromApi} from '../Data/Remote/utils/Helpers';
 
 function ChatsView(): JSX.Element {
-  const [aiMessages, setAiMessages] = useState<Message>({
-    message: 'Hello, I am your AI Assistant. How can I help you today?',
-    date: new Date(),
-    isMine: true,
-  });
   const api = useGetFromApi('chats/normalChats', (jsonData: any) => {
     var chats: Chat[] = jsonData.map((chat: any) => {
-      if (chat.user.id === 0) {
-        setAiMessages({
-          message: chat.last_message,
-          date: chat.last_message_date,
-          isMine: chat.unreadMessages,
-        });
-      }
       return {
         id: chat.user.id,
         name: chat.user.name,
@@ -35,7 +23,7 @@ function ChatsView(): JSX.Element {
       };
     });
 
-    return chats.filter(chat => chat.id != '0');
+    return chats;
   });
   const theme = useTheme();
   const {data, isLoading, load, refresh} = useCustomApi(() => api);
@@ -65,7 +53,9 @@ function ChatsView(): JSX.Element {
             image:
               'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
             title: 'AI Companion',
-            subTitle: aiMessages.message,
+            subTitle:
+              data?.filter(chat => chat.id.toString() === '0')[0]
+                ?.lastMessage ?? 'Chat with the new Ai powered bot ',
             onPress: () =>
               navigation.navigate('SingleChat', {
                 param1: 'AI Companion',
@@ -77,23 +67,25 @@ function ChatsView(): JSX.Element {
             rightText: 'Usek',
             notification: '0',
           },
-          ...(data ?? []).map(chat => {
-            return {
-              image: chat.image,
-              title: chat.name,
-              subTitle: chat.lastMessage,
-              onPress: () =>
-                navigation.navigate('SingleChat', {
-                  param1: chat.name,
-                  param2: chat.id,
-                  param3: chat.role,
-                  param4: chat.image,
-                }),
+          ...(data ?? [])
+            .filter(chat => chat.id != '0')
+            .map(chat => {
+              return {
+                image: chat.image,
+                title: chat.name,
+                subTitle: chat.lastMessage,
+                onPress: () =>
+                  navigation.navigate('SingleChat', {
+                    param1: chat.name,
+                    param2: chat.id,
+                    param3: chat.role,
+                    param4: chat.image,
+                  }),
 
-              rightText: formatDate(chat.lastMessageDate),
-              notification: chat.unreadMessages.toString(),
-            };
-          }),
+                rightText: formatDate(chat.lastMessageDate),
+                notification: chat.unreadMessages.toString(),
+              };
+            }),
         ]}
         isSearchable={true}
         searchPlaceholder="Search for chats"
