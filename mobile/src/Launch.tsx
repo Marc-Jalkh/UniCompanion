@@ -24,7 +24,7 @@ const Launch = (): React.JSX.Element => {
           height: insets.top,
           backgroundColor: theme.colors.tertiaryContainer,
         }}>
-        <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+        <StatusBar barStyle={theme.dark ? 'light-content' : 'light-content'} />
       </View>
 
       <AuthenticationProvider>

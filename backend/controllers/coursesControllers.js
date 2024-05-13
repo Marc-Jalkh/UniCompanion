@@ -21,8 +21,8 @@ const getCourses = async (req, res) => {
     const semesterGroups = {};
 
     courses.forEach((course) => {
-      let semester = course.crn % 10;
-      let year = Math.floor(course.crn / 10);
+      let semester = Math.floor((course.crn % 10000) / 1000);
+      let year = Math.floor(course.crn / 10000);
       if (semester === 1) semester = "Fall";
       else if (semester === 2) semester = "Spring";
       else semester = "Summer";
