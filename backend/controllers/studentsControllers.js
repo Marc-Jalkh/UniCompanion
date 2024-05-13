@@ -93,11 +93,11 @@ const getAllUsers = async (req, res) => {
 }
 
 const updatUser = async (req, res) => {
-    const { userId } = req.params;
+    const { user_id } = req.params;
     const { newData } = req.body;
 
     const row = await db('users')
-                .where({ user_id: userId })
+                .where({ user_id})
                 .update(newData);
 
     if (!row) {
@@ -109,10 +109,10 @@ const updatUser = async (req, res) => {
 }
 
 const deleteUser = async(req, res) => {
-    const { userId } = req.params;
-
+    const { user_id } = req.params;
+    console.log(user_id);
     const row = await db('users')
-                .where({ user_id: userId })
+                .where({ user_id })
                 .del();
 
     if (!row) {
@@ -146,12 +146,11 @@ const addUser = async(req, res) => {
     }
 
     const role_id = await db('roles').select('role_id').where({ name: role }).first();
-
-    await db('users_roles').insert({ user_id: row, role_id })
+    await db('users_roles').insert({ user_id: userData.user_id, role_id: role_id.role_id })
 
     
 
-    res.json(row);
+    res.send("User Added Successfully");
 }
 
 const getDegree = async(req, res) => {

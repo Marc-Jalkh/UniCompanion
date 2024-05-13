@@ -56,7 +56,9 @@ function ForYouView(): React.JSX.Element {
         <View style={[ScreensStyles.verticalMargin, ScreensStyles.fullHeight]}>
           <View>
             <Text style={{color: theme.colors.onSecondary}}>Quote:</Text>
-            <Text variant="titleMedium">{data?.quote}</Text>
+            <Text variant="titleMedium">
+              Stay Hungry, Stay foolish! - Steve Jobs
+            </Text>
           </View>
           <View
             style={[

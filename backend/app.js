@@ -3,10 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var socketIo = require('socket.io');  // Import Socket.IO
+var socketIo = require('socket.io');
+  
 
-const verifyToken = require('./controllers/authorization.js')
-var indexRouter = require('./routes/index');
+const authorization = require('./controllers/authorization.js')
 var usersRouter = require('./routes/users');
 const loginRoute = require('./routes/login.js');
 const chatRoute = require('./routes/chat.js');
@@ -18,7 +18,14 @@ const financeRoute = require('./routes/finance.js');
 const coursesRoute = require('./routes/courses.js');
 
 var app = express();
+const cors = require('cors')
+const corsOptions = {
+    origin: '*',
+    credential: true,
+    optionsSuccessStatus: 200
+}
 
+app.use(cors(corsOptions))
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -31,7 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoute);
 
-app.use(verifyToken);
+app.use(authorization.verifyToken);
+
+app.use(authorization.logs);
 
 app.use('/chats', chatRoute);
 

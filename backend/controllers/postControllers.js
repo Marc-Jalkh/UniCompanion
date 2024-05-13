@@ -17,12 +17,28 @@ const editPost = async (req, res) => {
         content: updates.content,
         picture: updates.image,
         date: updates.date,
+        'ishighlighted' : updates.isHighlited
     }
 
     try {
         const updated = await db('posts').where({post_id}).update(post);
         if (updated) {
             res.status(200).send({ message: 'Post updated successfully' });
+        } else {
+            res.status(404).send({ message: 'Post not found' });
+        }
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating post', error });
+    }
+};
+
+const getPost = async (req, res) => {
+    const { post_id } = req.params;
+    const posts = await db('posts').where({post_id});
+
+    try {
+        if (posts) {
+            res.status(200).send( posts );
         } else {
             res.status(404).send({ message: 'Post not found' });
         }
@@ -47,17 +63,19 @@ const deletePost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-    const { title, content, image, date } = req.body; // Assume posts have title, content, and picture attributes
+    const { title, content, image, date, isHighlited } = req.body; // Assume posts have title, content, and picture attributes
     
     try {
+
         await db('posts').insert({
             title,
             content,
             'picture': image,
-            date
+            date,
+            'ishighlighted' : isHighlited
         })
-
-        res.status(201).send({ message: 'Post created successfully' })
+        console.log('Post created successfully');
+        res.status(200).send({ message: 'Post created successfully' })
     } catch (error) {
         res.status(500).send({ message: 'Error creating post', error });
     }
@@ -67,5 +85,6 @@ module.exports = {
     getPosts,
     editPost,
     deletePost,
-    createPost
+    createPost,
+    getPost
 }

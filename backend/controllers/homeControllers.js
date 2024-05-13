@@ -18,12 +18,25 @@ const convertToGPA = (grade) => {
 
 const getHome = async (req, res) => {
     const user_id = req.user_id;
+    const role = req.role;
     try {
         const user = await db('users').select('salutation', 'first_name', 'last_name').where({ user_id }).first();
 
         const posts = await db('posts').select('*');
 
+        const semester = getCurrentSemester();
 
+        if (role !== 'student') {
+            data = {
+                user: user.salutation + ' ' + user.first_name + ' ' + user.last_name,
+                posts,
+                semester: semester.semesterString + ' ' + (semester.year - 1) + '-' + semester.year,
+                gpa: 0,
+                grade: 0
+            }
+            res.status(200).json(data);
+            return;
+        }
         // First, retrieve the grades and credits for the student
         const results = await db('users_courses')
             .join('courses_offering', 'users_courses.course_id', 'courses_offering.courses_offering_id')
@@ -52,11 +65,10 @@ const getHome = async (req, res) => {
         const grade = totalWeightedGrades / totalCredits;
         const gpa = totalWeightedGPA / totalCredits;
 
-        const semester = getCurrentSemester();
 
         // Calculate the weighted average grade
         data = {
-            user: user.salutation + ' ' + user.first_name +  ' ' + user.last_name,
+            user: user.salutation + ' ' + user.first_name + ' ' + user.last_name,
             posts,
             semester: semester.semesterString + ' ' + (semester.year - 1) + '-' + semester.year,
             gpa,

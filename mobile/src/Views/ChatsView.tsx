@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {RefreshControl, View} from 'react-native';
 import HeaderView from '../Common/component/Header/Header';
 import {ScreensStyles} from '../Common/utils/Assets/Styles/ScreensStyles';
@@ -53,7 +53,9 @@ function ChatsView(): JSX.Element {
             image:
               'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
             title: 'AI Companion',
-            subTitle: 'SubTitle',
+            subTitle:
+              data?.filter(chat => chat.id.toString() === '0')[0]
+                ?.lastMessage ?? 'Chat with the new Ai powered bot ',
             onPress: () =>
               navigation.navigate('SingleChat', {
                 param1: 'AI Companion',
@@ -62,26 +64,28 @@ function ChatsView(): JSX.Element {
                 param4:
                   'https://img.freepik.com/premium-vector/support-bot-ai-assistant-flat-icon-with-blue-support-bot-white-background_194782-1435.jpg',
               }),
-            rightText: 'Right Text',
+            rightText: 'Usek',
             notification: '0',
           },
-          ...(data ?? []).map(chat => {
-            return {
-              image: chat.image,
-              title: chat.name,
-              subTitle: chat.lastMessage,
-              onPress: () =>
-                navigation.navigate('SingleChat', {
-                  param1: chat.name,
-                  param2: chat.id,
-                  param3: chat.role,
-                  param4: chat.image,
-                }),
+          ...(data ?? [])
+            .filter(chat => chat.id != '0')
+            .map(chat => {
+              return {
+                image: chat.image,
+                title: chat.name,
+                subTitle: chat.lastMessage,
+                onPress: () =>
+                  navigation.navigate('SingleChat', {
+                    param1: chat.name,
+                    param2: chat.id,
+                    param3: chat.role,
+                    param4: chat.image,
+                  }),
 
-              rightText: formatDate(chat.lastMessageDate),
-              notification: chat.unreadMessages.toString(),
-            };
-          }),
+                rightText: formatDate(chat.lastMessageDate),
+                notification: chat.unreadMessages.toString(),
+              };
+            }),
         ]}
         isSearchable={true}
         searchPlaceholder="Search for chats"

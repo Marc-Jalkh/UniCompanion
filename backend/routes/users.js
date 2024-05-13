@@ -7,8 +7,8 @@ router.get('/allStudents', controller.getAllStudents);
 router.get('/all', controller.getAllUsers);
 router.get('/student/:user_id', controller.getStudent);
 router.get('/degree/:user_id', controller.getDegree);
-router.post('/update', controller.updatUser);
-router.post('/delete', controller.deleteUser);
+router.post('/update/:user_id', controller.updatUser);
+router.post('/delete/:user_id', controller.deleteUser);
 router.post('/add', controller.addUser);
 
 

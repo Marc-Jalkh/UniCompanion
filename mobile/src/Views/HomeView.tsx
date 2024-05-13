@@ -120,13 +120,15 @@ function HomeView(): React.JSX.Element {
             title="Wallet"
           />
         </View>
-        <IntoCard
-          title="Semester:"
-          subTitle={data?.semester ?? 'Not enrolled'}
-          gpa={data?.gpa ?? '0.0'}
-          grade={data?.grade ?? '0/100'}
-          onPress={() => navigation.navigate('Grades')}
-        />
+        {data?.gpa?.toString() === '0' ? null : (
+          <IntoCard
+            title="Semester:"
+            subTitle={data?.semester ?? 'Not enrolled'}
+            gpa={data?.gpa ?? '0.0'}
+            grade={data?.grade ?? '0/100'}
+            onPress={() => navigation.navigate('Grades')}
+          />
+        )}
         <View style={ScreensStyles.marginTop}>
           <View style={ScreensStyles.horizontalContainerSpaced}>
             <Text variant="titleLarge">Post</Text>

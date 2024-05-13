@@ -1,0 +1,15 @@
+.BaseProp{
+    position: relative;
+    margin: 50px;
+    margin-top: 60px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.baseHeading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px;
+}

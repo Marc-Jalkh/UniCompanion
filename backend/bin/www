@@ -10,6 +10,8 @@ var http = require("http");
 const fs = require("fs");
 const path = require("path");
 const db = require('../config/dbconfig.js');
+const sessionClient = require('../config/dfconfig.js');
+require("dotenv").config();
 
 /**
  * Get port from environment and store in Express.
@@ -125,12 +127,12 @@ io.on("connection", function (socket) {
       .where({ user1_id: user1_id, user2_id: user2_id })
       .orWhere({ user1_id: user2_id, user2_id: user1_id })
       .first();
-  
+
 
     if (chatroom) {
-      if(user1_id == 0){
-
-        
+      if (user1_id == 0) {
+        const messageJson = await dialog(message, user2_id, chatroom.path_to_json);
+        io.to(room).emit('message', messageJson);
         return;
       }
       var messageJson = {
@@ -141,10 +143,10 @@ io.on("connection", function (socket) {
       };
       const messages = JSON.parse(fs.readFileSync(chatroom.path_to_json));
 
-      if(messages.length > 0 && io.sockets.adapter.rooms.get(room).size == 1){
+      if (messages.length > 0 && io.sockets.adapter.rooms.get(room).size == 1) {
         const lastMessage = messages[messages.length - 1];
         messageJson.read = lastMessage.read + 1;
-      }else if(io.sockets.adapter.rooms.get(room).size == 2){
+      } else if (io.sockets.adapter.rooms.get(room).size == 2) {
         messageJson.read = 0;
       }
       messages.push(messageJson); // Append new message
@@ -157,6 +159,63 @@ io.on("connection", function (socket) {
     console.log("User disconnected");
   });
 });
+
+async function dialog(message, userID, path) {
+  const sessionId = process.env.SESSION_ID + userID;
+  // Create a new session
+  const projectId = process.env.GOOGLE_PROJECT_ID;
+  var messageJson = {
+    message: message,
+    date: new Date().toISOString(),
+    sender_id: userID,
+    read: 0
+  };
+
+  const messages = JSON.parse(fs.readFileSync(path));
+  messages.push(messageJson);
+  // Correct way to generate session path
+  const sessionPath = sessionClient.projectAgentSessionPath(
+    projectId,
+    sessionId
+  );
+
+  // The text query request.
+  const request = {
+    session: sessionPath,
+    queryInput: {
+      text: {
+        text: message,
+        languageCode: "en-US",
+      },
+      queryParams: {
+        timeZone: "Asia/Beirut",
+        sentimentAnalysisRequestConfig: {
+          analyzeQueryTextSentiment: true,
+        },
+        knowledgeBaseNames: process.env.KNOWLEDGE_BASE_NAMES,
+      },
+    },
+  };
+
+  // Send request and log result
+  const responses = await sessionClient.detectIntent(request);
+  const result = responses[0].queryResult;
+
+  var messageJson = {
+    message: result.fulfillmentText,
+    date: new Date().toISOString(),
+    sender_id: 0,
+    read: 0
+  };
+  messages.push(messageJson);
+
+  try {
+    fs.writeFileSync(path, JSON.stringify(messages))
+  } catch (error) {
+    console.error("Error writing to JSON file:", error);
+  }
+  return messageJson;
+}
 
 /**
  * Listen on provided port, on all network interfaces.
