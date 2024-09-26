@@ -1,4 +1,4 @@
-# Flindr (Flight Finder)
+# Uni Companion
 
 UNI Companion is a full fledge system designed to provide students with a more competitive academic and social support system. Developed by Marc Jalkh and Gilbert Hallal at the Holy Spirit University of Kaslik (USEK) as a Final year project, it aims to simplify communication on campus and provide easy access to necessary information.
 
