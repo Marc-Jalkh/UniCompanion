@@ -5,15 +5,15 @@ UNI Companion is a full fledge system designed to provide students with a more c
 ## Screenshots
 
 <div style="display: flex; flex-wrap: wrap;">
-<img src="Screenshots/Screen(1).jpg" alt="Screenshot 1" height="400">
-<img src="Screenshots/Screen(2).jpg" alt="Screenshot 2" height="400">
-<img src="Screenshots/Screen(3).jpg" alt="Screenshot 3" height="400">
-<img src="Screenshots/Screen(4).jpg" alt="Screenshot 4" height="400">
-<img src="Screenshots/Screen(5).jpg" alt="Screenshot 5" height="400">
-<img src="Screenshots/Screen(6).jpg" alt="Screenshot 6" height="400">
-<img src="Screenshots/Screen(7).jpg" alt="Screenshot 7" height="400">
-<img src="Screenshots/Screen(8).jpg" alt="Screenshot 8" height="400">
-<img src="Screenshots/Screen(9).jpg" alt="Screenshot 9" height="400">
+<img src="https://i.imgur.com/XeRAURi.png" alt="Screenshot 1" height="400">
+<img src="https://i.imgur.com/7XryaRM.png" alt="Screenshot 2" height="400">
+<img src="https://i.imgur.com/uar9dc0.png" alt="Screenshot 3" height="400">
+<img src="https://i.imgur.com/mJA0psL.png" alt="Screenshot 4" height="400">
+<img src="https://i.imgur.com/arIxbvv.png" alt="Screenshot 5" height="400">
+<img src="https://i.imgur.com/9cJgZnj.png.jpg" alt="Screenshot 6" height="400">
+<img src="https://i.imgur.com/STCqjmG.png" alt="Screenshot 7" height="400">
+<img src="https://i.imgur.com/DMeOs6B.png" alt="Screenshot 8" height="400">
+<img src="https://i.imgur.com/vHC7DL8.png" alt="Screenshot 9" height="400">
 </div>
 
 ## Features
